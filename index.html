@@ -394,12 +394,12 @@ select:focus{border-color:var(--sip)}
   <div class="card">
     <div class="card-head"><div class="card-icon" style="background:var(--sweet-d);border:1px solid var(--sweet)">🎯</div><div><div class="card-title">Coverage Ratio</div><div class="card-sub">SIP Corpus ÷ Total Loan Outgo</div></div></div>
     <div class="card-body">
-      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:nowrap">
         <div class="donut-outer" style="width:130px;height:130px;position:relative;flex-shrink:0">
           <canvas id="donutC" style="display:block;width:130px;height:130px"></canvas>
           <div class="cn" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none"><div class="cn-val" id="d_pct">—%</div><div class="cn-lbl">covered</div></div>
         </div>
-        <div style="flex:1;min-width:110px;display:flex;flex-direction:column;gap:9px">
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <div><div class="sl">Monthly EMI</div><div class="sv" style="color:var(--loan)" id="d_emi">₹—</div></div>
           <div><div class="sl">Monthly SIP</div><div class="sv" style="color:var(--sip)" id="d_sip">₹—</div></div>
           <div><div class="sl">Tenure</div><div class="sv" style="color:var(--purple)" id="d_ten">—</div></div>
@@ -1141,8 +1141,9 @@ function buildDashboard() {
   set('d_pct',(ratio*100).toFixed(0)+'%');
   set('d_fl_emi',INR(emiN)+'/mo'); set('d_fl_sip',INR(sipAmt)+'/mo');
 
+  requestAnimationFrame(()=>{
   drawDonut('donutC',ratio,ratio>=1?'#10b981':'#06b6d4',ratio>=1?'#34d399':'#10b981');
-
+  setTimeout(()=>drawDonut('donutC',ratio,ratio>=1?'#10b981':'#06b6d4',ratio>=1?'#34d399':'#10b981'),120);
   requestAnimationFrame(()=>{
     // Wealth trajectory chart
     const maxM=Math.min(N*2,180), ls=[], wLoanSip=[], wNoLoan=[], wNothing=[];
@@ -1180,6 +1181,7 @@ function buildDashboard() {
     // Timeline
     buildTimeline();
   });
+  });
 }
 
 function buildHeatmap() {
@@ -1198,19 +1200,19 @@ function buildHeatmap() {
   }));
   const minV=Math.min(...allVals)||0, maxV=Math.max(...allVals)||360;
 
-  let html=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.62rem">
-    <thead><tr><th style="padding:4px 6px;text-align:left;color:var(--text3)">Capacity ↓ / MF% →</th>`;
-  returns.forEach(r=>html+=`<th style="padding:4px 6px;color:var(--sip)">${r}%</th>`);
+  let html=`<div style="overflow-x:auto;width:100%"><table style="width:100%;border-collapse:collapse;font-size:.7rem;table-layout:fixed">
+    <thead><tr><th style="padding:6px 8px;text-align:left;color:var(--text3);width:70px">Cap ↓ / MF →</th>`;
+  returns.forEach(r=>html+=`<th style="padding:6px 4px;color:var(--sip);text-align:center">${r}%</th>`);
   html+=`</tr></thead><tbody>`;
   grid.forEach((row,ci)=>{
-    html+=`<tr><td style="padding:4px 8px;font-weight:600;color:var(--text2);white-space:nowrap">${(caps[ci]/1000).toFixed(0)}K</td>`;
+    html+=`<tr><td style="padding:6px 8px;font-weight:700;color:var(--text2);white-space:nowrap;font-size:.7rem">${INR(caps[ci]).replace('₹','₹')}</td>`;
     row.forEach(v=>{
-      if(!v){html+=`<td style="padding:3px;text-align:center"><div class="hm-cell" style="background:rgba(239,68,68,.2);color:var(--red)">✗</div></td>`;return;}
+      if(!v){html+=`<td style="padding:3px;text-align:center"><div class="hm-cell" style="background:rgba(239,68,68,.2);color:var(--red);width:100%">✗</div></td>`;return;}
       const t=(v-minV)/(maxV-minV||1);
       const r2=Math.round(239-(239-16)*( 1-t));
       const g2=Math.round(68+(185-68)*(1-t));
       const b2=Math.round(68+(129-68)*(1-t));
-      html+=`<td style="padding:3px;text-align:center"><div class="hm-cell" style="background:rgba(${r2},${g2},${b2},0.22);color:rgb(${r2},${g2},${b2})">${v}m</div></td>`;
+      html+=`<td style="padding:3px;text-align:center"><div class="hm-cell" style="background:rgba(${r2},${g2},${b2},0.22);color:rgb(${r2},${g2},${b2});width:100%">${v}m</div></td>`;
     });
     html+=`</tr>`;
   });
@@ -1695,6 +1697,17 @@ if('serviceWorker' in navigator){
    INIT
 ═══════════════════════════════════════════════════ */
 window.addEventListener('load',()=>{
+  // Redraw donut after sidenav animation settles on desktop
+  if(window.ResizeObserver){
+    const ro = new ResizeObserver(()=>{
+      if(curPage==='dashboard'){
+        const {ratio} = S;
+        drawDonut('donutC',ratio,ratio>=1?'#10b981':'#06b6d4',ratio>=1?'#34d399':'#10b981');
+      }
+    });
+    const donutEl = document.getElementById('donutC');
+    if(donutEl) ro.observe(donutEl.parentElement);
+  }
   loadTheme();
   loadFromURL();
   readInputs(); compute();
