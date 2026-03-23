@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0a0f1a" id="themeColorMeta">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LoanSIP">
+<meta name="mobile-web-app-capable" content="yes">
+<title>LoanSIP — Loan Freedom Sweet Spot Calculator</title>
+<meta name="description" content="Find the exact loan tenure where your SIP investments cover your total loan cost. Step-up SIP, tax shield, scenario comparison, reverse calculator and more.">
+<meta name="keywords" content="loan calculator, SIP calculator, EMI calculator, loan freedom, sweet spot, mutual fund SIP, step-up SIP, tax shield 80C 24b, financial planning India">
+<meta name="author" content="LoanSIP">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sranjeit.github.io/loansip/">
+<meta property="og:url" content="https://sranjeit.github.io/loansip/">
+<meta property="og:image" content="https://sranjeit.github.io/loansip/og.png">
+<meta name="twitter:url" content="https://sranjeit.github.io/loansip/">
+<meta name="twitter:image" content="https://sranjeit.github.io/loansip/og.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LoanSIP — Loan Freedom Sweet Spot Calculator">
+<meta property="og:description" content="Extend tenure → lower EMI → invest difference as SIP. Find where MF corpus = total loan paid.">
+<meta property="og:site_name" content="LoanSIP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22LoanSIP%22%2C%22short_name%22%3A%22LoanSIP%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0f1a%22%2C%22theme_color%22%3A%22%230a0f1a%22%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"LoanSIP","url":"https://sranjeit.github.io/loansip/","description":"Loan freedom sweet spot calculator with SIP, tax shield and scenario comparison","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"}}</script>
+<style>
+/* ══ TOKENS ══ */
+:root{
+  --bg:#0a0f1a;--bg2:#0f1624;--surface:#131d30;--surface2:#1a2540;
+  --border:#1e2e48;--border2:#253556;
+  --loan:#f97316;--loan-d:rgba(249,115,22,.13);
+  --sip:#06b6d4;--sip-d:rgba(6,182,212,.12);
+  --sweet:#10b981;--sweet-d:rgba(16,185,129,.11);
+  --purple:#8b5cf6;--purple-d:rgba(139,92,246,.12);
+  --text:#e8eeff;--text2:#94a3c0;--text3:#4a6080;
+  --red:#ef4444;--yellow:#f59e0b;--pink:#ec4899;
+  --nav-h:60px;--bottom-h:68px;--side-w:248px;
+  --radius:14px;--card-p:16px;
+}
+body.light{
+  --bg:#f0f4ff;--bg2:#e8eeff;--surface:#ffffff;--surface2:#f4f7ff;
+  --border:#dde4f0;--border2:#c8d4e8;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+canvas{display:block;max-width:100%}
+
+/* ══ TOP NAV ══ */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(10,15,26,.88);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px;transition:background .25s}
+body.light .topnav{background:rgba(240,244,255,.92)}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:8px;border-radius:8px;border:none;background:transparent;color:var(--text2)}
+.hamburger span{display:block;width:18px;height:2px;background:currentColor;border-radius:2px;transition:.2s}
+@media(max-width:900px){.hamburger{display:flex}}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:1.05rem;letter-spacing:-.02em}
+.logo-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--sip),var(--sweet));display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
+.logo-text{color:var(--text)}.logo-text span{color:var(--sip)}
+.topnav-links{display:flex;gap:2px;margin-left:auto}
+@media(max-width:900px){.topnav-links{display:none}}
+.topnav-links a{padding:6px 12px;border-radius:8px;text-decoration:none;font-size:.8rem;font-weight:500;color:var(--text2);transition:.15s;cursor:pointer;border:none;background:transparent;font-family:'Inter',sans-serif}
+.topnav-links a:hover,.topnav-links a.active{background:var(--surface2);color:var(--text)}
+.topnav-links a.active{color:var(--sip)}
+.topnav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+@media(min-width:901px){.topnav-links{margin-left:auto}.topnav-right{margin-left:0}}
+.btn-primary{background:linear-gradient(135deg,var(--sip),var(--sweet));color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:opacity .15s,transform .1s}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:6px 10px;font-size:.85rem;cursor:pointer;transition:.15s}
+.btn-icon:hover{background:var(--surface);color:var(--text)}
+
+/* ══ SIDENAV ══ */
+.sidenav-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.sidenav-overlay.open{display:block}
+.sidenav{position:fixed;top:0;left:0;bottom:0;z-index:201;width:var(--side-w);background:var(--bg2);border-right:1px solid var(--border);transform:translateX(-100%);transition:transform .25s ease;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0)}
+.sidenav.open{transform:translateX(0)}
+.sidenav-head{height:var(--nav-h);display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);gap:10px}
+.sidenav-close{margin-left:auto;background:transparent;border:none;color:var(--text2);font-size:1.1rem;cursor:pointer;padding:4px}
+.sidenav-menu{flex:1;overflow-y:auto;padding:10px 8px}
+.sidenav-section{margin-bottom:18px}
+.sidenav-section-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.14em;color:var(--text3);padding:4px 10px 8px;font-weight:600}
+.sidenav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:.83rem;font-weight:500;color:var(--text2);transition:.15s;border:none;background:transparent;width:100%;text-align:left;font-family:'Inter',sans-serif}
+.sidenav-item:hover{background:var(--surface);color:var(--text)}
+.sidenav-item.active{background:var(--surface2);color:var(--sip)}
+.si-icon{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
+.si-badge{margin-left:auto;background:var(--sip-d);color:var(--sip);font-size:.6rem;padding:2px 6px;border-radius:20px;font-weight:600}
+.si-new{margin-left:auto;background:rgba(236,72,153,.15);color:var(--pink);font-size:.6rem;padding:2px 6px;border-radius:20px;font-weight:600}
+.sidenav-footer{padding:12px 8px;border-top:1px solid var(--border)}
+@media(min-width:901px){.sidenav{transform:translateX(0)!important;position:fixed;top:var(--nav-h)}.sidenav-head{display:none}.sidenav-overlay{display:none!important}.main-shell{margin-left:var(--side-w)}}
+
+/* ══ LAYOUT ══ */
+.main-shell{padding-top:var(--nav-h);padding-bottom:var(--bottom-h);min-height:100vh;min-height:100dvh}
+@media(min-width:901px){.main-shell{padding-bottom:0}}
+.page{display:none;padding:18px 14px 28px;max-width:920px;margin:0 auto}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page.active>*{animation:fadeUp .28s ease both}
+.page.active>*:nth-child(2){animation-delay:.04s}
+.page.active>*:nth-child(3){animation-delay:.08s}
+.page.active>*:nth-child(4){animation-delay:.12s}
+.page.active>*:nth-child(5){animation-delay:.16s}
+.page.active>*:nth-child(6){animation-delay:.2s}
+
+/* ══ BOTTOM NAV ══ */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:var(--bottom-h);padding-bottom:env(safe-area-inset-bottom,0);background:rgba(10,15,26,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center}
+body.light .bottomnav{background:rgba(240,244,255,.95)}
+@media(min-width:901px){.bottomnav{display:none}}
+.bottomnav-inner{display:flex;width:100%}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 4px;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:color .15s;font-family:'Inter',sans-serif}
+.btab.active{color:var(--sip)}
+.bt-icon{font-size:1.15rem;line-height:1}
+.bt-label{font-size:.6rem;font-weight:600;letter-spacing:.02em}
+
+/* ══ COMPONENTS ══ */
+.page-header{margin-bottom:18px}
+.page-header h2{font-size:1.25rem;font-weight:700;letter-spacing:-.02em}
+.page-header p{font-size:.78rem;color:var(--text2);margin-top:3px;line-height:1.5}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:0}
+.card-head{padding:13px var(--card-p) 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.card-title{font-size:.86rem;font-weight:600}
+.card-sub{font-size:.65rem;color:var(--text2);margin-top:1px}
+.card-body{padding:var(--card-p)}
+.gap{height:12px}
+
+/* stat grids */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:360px){.sg3{grid-template-columns:1fr 1fr}}
+.stat{background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:10px 12px}
+.stat.full{grid-column:1/-1}
+.stat.al{background:var(--loan-d);border-color:var(--loan)}
+.stat.as{background:var(--sip-d);border-color:var(--sip)}
+.stat.aw{background:var(--sweet-d);border-color:var(--sweet)}
+.stat.ap{background:var(--purple-d);border-color:var(--purple)}
+.sl{font-size:.57rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;font-weight:600}
+.sv{font-size:.88rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.stat.al .sv{color:var(--loan);font-size:1.05rem}
+.stat.as .sv{color:var(--sip);font-size:1.05rem}
+.stat.aw .sv{color:var(--sweet);font-size:1.05rem}
+.stat.ap .sv{color:var(--purple);font-size:1.05rem}
+
+/* kpi */
+.kpi-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 13px 11px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.kl::before{background:var(--loan)}.kpi.ks::before{background:var(--sip)}.kpi.kw::before{background:var(--sweet)}.kpi.kp::before{background:var(--purple)}
+.kpi-label{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:5px}
+.kpi-val{font-size:1.1rem;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}
+.kpi-sub{font-size:.6rem;color:var(--text3);margin-top:4px}
+.kpi.kl .kpi-val{color:var(--loan)}.kpi.ks .kpi-val{color:var(--sip)}.kpi.kw .kpi-val{color:var(--sweet)}.kpi.kp .kpi-val{color:var(--purple)}
+
+/* fields */
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:.65rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
+.fg label.lc{color:var(--loan)}.fg label.sc{color:var(--sip)}.fg label.pc{color:var(--purple)}.fg label.gc{color:var(--sweet)}
+.fiw{position:relative}
+.fpfx,.fsfx{position:absolute;top:50%;transform:translateY(-50%);font-size:.82rem;color:var(--text3);font-family:'JetBrains Mono',monospace;pointer-events:none}
+.fpfx{left:11px}.fsfx{right:11px}
+.fi{width:100%;background:var(--surface2);border:1.5px solid var(--border2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;padding:9px 32px 9px 26px;border-radius:10px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+.fi:focus{border-color:var(--sip);box-shadow:0 0 0 3px rgba(6,182,212,.1)}
+.fi.pc{border-color:rgba(139,92,246,.4)}.fi.pc:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.fi.sc{border-color:rgba(6,182,212,.4)}.fi.sc:focus{border-color:var(--sip)}
+.fi.gc{border-color:rgba(16,185,129,.4)}.fi.gc:focus{border-color:var(--sweet)}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(max-width:400px){.igrid{grid-template-columns:1fr}}
+
+/* tenure slider */
+.t-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.t-num{font-size:1.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--purple);line-height:1}
+.t-num sub{font-size:.72rem;color:var(--text2);font-weight:400;margin-left:4px}
+.tq-row{display:flex;gap:5px;flex-wrap:wrap}
+.tq{padding:4px 9px;border-radius:6px;font-size:.68rem;font-weight:600;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:.15s}
+.tq:hover{border-color:var(--purple);color:var(--purple)}
+.tq.sweet-tq{background:var(--sweet-d);border-color:var(--sweet);color:var(--sweet)}
+.range-wrap{position:relative;padding-bottom:26px;margin-top:12px}
+input.rt{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--loan) var(--fill,0%),var(--border2) var(--fill,0%))}
+input.rt::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 4px var(--bg),0 0 12px rgba(139,92,246,.6);cursor:pointer;transition:transform .15s}
+input.rt::-webkit-slider-thumb:hover{transform:scale(1.15)}
+input.rt::-moz-range-thumb{width:22px;height:22px;border-radius:50%;border:none;background:var(--purple);box-shadow:0 0 12px rgba(139,92,246,.5)}
+.sweet-pin{position:absolute;top:0;transform:translateX(-50%);pointer-events:none;display:none}
+.sp-line{width:2px;height:6px;background:var(--sweet);margin:0 auto;border-radius:2px}
+.sp-dot{width:10px;height:10px;border-radius:50%;background:var(--sweet);margin:0 auto;box-shadow:0 0 8px var(--sweet);margin-top:2px}
+.sp-label{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:var(--sweet);color:#051f13;font-size:.57rem;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.range-labs{display:flex;justify-content:space-between;position:absolute;bottom:0;left:0;right:0;font-size:.57rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+
+/* formula box */
+.formula{background:var(--surface2);border:1px dashed rgba(6,182,212,.3);border-radius:10px;padding:10px 13px;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--text2);line-height:1.85}
+.fl{color:var(--loan);font-weight:600}.fs{color:var(--sip);font-weight:600}.fw{color:var(--sweet);font-weight:600}.fb{font-size:.9rem;font-weight:700;color:var(--text)}
+
+/* progress bars */
+.prog{margin-bottom:9px}
+.prog-top{display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:4px}
+.prog-lbl{color:var(--text2)}.prog-v{font-family:'JetBrains Mono',monospace;font-weight:600}
+.prog-bg{height:8px;border-radius:4px;background:var(--surface2);overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.pf-loan{background:linear-gradient(90deg,var(--loan),#fb923c)}
+.pf-sip{background:linear-gradient(90deg,var(--sip),var(--sweet))}
+.pf-purple{background:linear-gradient(90deg,var(--purple),#a78bfa)}
+
+/* verdict */
+.verdict{border-radius:var(--radius);padding:15px;border:1px solid;text-align:center;transition:.3s}
+.vw{background:var(--sweet-d);border-color:rgba(16,185,129,.4)}.vc{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.35)}.vb{background:rgba(249,115,22,.07);border-color:rgba(249,115,22,.3)}.ve{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.3)}
+.v-icon{font-size:1.5rem;margin-bottom:5px}.v-title{font-size:.88rem;font-weight:700;margin-bottom:5px}
+.vw .v-title{color:var(--sweet)}.vc .v-title{color:var(--yellow)}.vb .v-title{color:var(--loan)}.ve .v-title{color:var(--red)}
+.v-body{font-size:.73rem;color:var(--text2);line-height:1.7}
+
+/* donut */
+.donut-outer{position:relative;flex-shrink:0}
+.cn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.cn-val{font-size:1.3rem;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}
+.cn-lbl{font-size:.58rem;color:var(--text3);margin-top:2px}
+
+/* table */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.72rem}
+th{background:var(--surface2);color:var(--text2);padding:7px 9px;text-align:right;font-weight:600;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+th:first-child{text-align:left;border-radius:7px 0 0 7px}
+th:last-child{border-radius:0 7px 7px 0}
+td{padding:6px 9px;text-align:right;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;color:var(--text2)}
+td:first-child{text-align:left;color:var(--text);font-family:'Inter',sans-serif;font-weight:500}
+tr.sr td{background:var(--sweet-d);color:var(--sweet);font-weight:600}
+tr:last-child td{border-bottom:none}
+
+/* tabs */
+.tabs{display:flex;gap:4px;padding:4px;background:var(--surface2);border-radius:10px;margin-bottom:14px}
+.tab{flex:1;padding:7px 6px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:'Inter',sans-serif;transition:.15s;text-align:center}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+
+/* toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--sweet);color:#051f13;padding:9px 18px;border-radius:10px;font-size:.78rem;font-weight:600;z-index:999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:901px){.toast{bottom:24px}}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+@media(min-width:600px){.modal-bg{align-items:center}}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto}
+@media(min-width:600px){.modal{border-radius:20px;max-height:80vh}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.modal-title{font-size:1rem;font-weight:700}
+.modal-close{background:transparent;border:none;color:var(--text2);font-size:1.2rem;cursor:pointer;padding:4px}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 16px}
+@media(min-width:600px){.modal-handle{display:none}}
+
+/* scenario cards */
+.scene-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:12px 13px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:.15s}
+.scene-card:hover{border-color:var(--sip)}
+.scene-card.active-sc{border-color:var(--sweet);background:var(--sweet-d)}
+.scene-info{flex:1;min-width:0}
+.scene-name{font-size:.82rem;font-weight:600;truncate:ellipsis;overflow:hidden;white-space:nowrap}
+.scene-meta{font-size:.65rem;color:var(--text2);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.scene-actions{display:flex;gap:6px}
+.btn-sm{padding:5px 10px;border-radius:7px;font-size:.7rem;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:.15s}
+.btn-sm.primary{background:var(--sip-d);color:var(--sip);border:1px solid rgba(6,182,212,.3)}
+.btn-sm.danger{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.btn-sm.ghost{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
+.btn-sm:hover{opacity:.8}
+
+/* onboarding */
+.ob-overlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.75);display:flex;align-items:flex-end}
+.ob-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-width:480px;margin:0 auto}
+@media(min-width:600px){.ob-overlay{align-items:center}.ob-card{border-radius:20px}}
+.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:.2s}
+.ob-dot.active{background:var(--sip);width:20px;border-radius:4px}
+.ob-icon{font-size:2.4rem;text-align:center;margin-bottom:12px}
+.ob-title{font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:8px}
+.ob-body{font-size:.8rem;color:var(--text2);text-align:center;line-height:1.7;margin-bottom:20px}
+.ob-actions{display:flex;justify-content:space-between;align-items:center}
+.ob-skip{font-size:.75rem;color:var(--text3);cursor:pointer;padding:8px}
+.ob-next{background:linear-gradient(135deg,var(--sip),var(--sweet));color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* faq */
+.faq-item{border-bottom:1px solid var(--border);padding:12px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:.85rem;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.faq-arrow{color:var(--text3);transition:.2s;font-size:.75rem}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{font-size:.76rem;color:var(--text2);line-height:1.7;margin-top:8px;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* chip */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:.63rem;font-weight:600}
+.chip-g{background:var(--sweet-d);color:var(--sweet);border:1px solid rgba(16,185,129,.3)}
+.chip-b{background:var(--sip-d);color:var(--sip);border:1px solid rgba(6,182,212,.3)}
+.chip-o{background:var(--loan-d);color:var(--loan);border:1px solid rgba(249,115,22,.3)}
+.chip-p{background:var(--purple-d);color:var(--purple);border:1px solid rgba(139,92,246,.3)}
+
+/* heatmap */
+.heatmap{display:grid;gap:3px;font-size:.6rem}
+.hm-cell{border-radius:4px;height:26px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.6rem;transition:opacity .2s}
+.hm-cell:hover{opacity:.8}
+
+/* range-rate toggle */
+.toggle-row{display:flex;gap:8px;align-items:center}
+.toggle-lbl{font-size:.65rem;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+input[type=checkbox]{appearance:none;width:36px;height:20px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border2);cursor:pointer;position:relative;transition:.2s}
+input[type=checkbox]:checked{background:var(--sip);border-color:var(--sip)}
+input[type=checkbox]::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:.2s}
+input[type=checkbox]:checked::after{left:18px}
+
+/* select */
+select{background:var(--surface2);border:1.5px solid var(--border2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:600;padding:8px 10px;border-radius:10px;outline:none;cursor:pointer;width:100%}
+select:focus{border-color:var(--sip)}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSide()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="logo" href="#" onclick="nav('dashboard');return false">
+    <div class="logo-icon">🎯</div>
+    <span class="logo-text">Loan<span>SIP</span></span>
+  </a>
+  <div class="topnav-links">
+    <a onclick="nav('dashboard')" data-p="dashboard" class="active">Dashboard</a>
+    <a onclick="nav('calc')" data-p="calc">Calculator</a>
+    <a onclick="nav('analysis')" data-p="analysis">Analysis</a>
+    <a onclick="nav('compare')" data-p="compare">Compare</a>
+    <a onclick="nav('tools')" data-p="tools">Tools</a>
+    <a onclick="nav('about')" data-p="about">About</a>
+  </div>
+  <div class="topnav-right">
+    <button class="btn-icon" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+    <button class="btn-icon" onclick="openScenarios()" title="Saved scenarios">📂</button>
+    <button class="btn-icon" onclick="shareURL()" title="Share">🔗</button>
+    <button class="btn-primary" onclick="nav('calc');setTimeout(jumpSweet,150)">🎯 Sweet Spot</button>
+  </div>
+</nav>
+
+<!-- SIDENAV -->
+<div class="sidenav-overlay" id="sideOverlay" onclick="toggleSide()"></div>
+<aside class="sidenav" id="sidenav">
+  <div class="sidenav-head">
+    <div class="logo-icon">🎯</div>
+    <span style="font-weight:700;font-size:1rem">Loan<span style="color:var(--sip)">SIP</span></span>
+    <button class="sidenav-close" onclick="toggleSide()">✕</button>
+  </div>
+  <div class="sidenav-menu">
+    <div class="sidenav-section">
+      <div class="sidenav-section-label">Pages</div>
+      <button class="sidenav-item active" data-sp="dashboard" onclick="nav('dashboard')"><span class="si-icon">📊</span>Dashboard</button>
+      <button class="sidenav-item" data-sp="calc" onclick="nav('calc')"><span class="si-icon">🧮</span>Calculator<span class="si-badge">Core</span></button>
+      <button class="sidenav-item" data-sp="analysis" onclick="nav('analysis')"><span class="si-icon">📈</span>Analysis</button>
+      <button class="sidenav-item" data-sp="compare" onclick="nav('compare')"><span class="si-icon">⚖️</span>Compare<span class="si-new">New</span></button>
+      <button class="sidenav-item" data-sp="tools" onclick="nav('tools')"><span class="si-icon">🔧</span>Tools<span class="si-new">New</span></button>
+      <button class="sidenav-item" data-sp="about" onclick="nav('about')"><span class="si-icon">ℹ️</span>About</button>
+    </div>
+    <div class="sidenav-section">
+      <div class="sidenav-section-label">Actions</div>
+      <button class="sidenav-item" onclick="nav('calc');setTimeout(jumpSweet,150)"><span class="si-icon">🎯</span>Jump to Sweet Spot</button>
+      <button class="sidenav-item" onclick="openScenarios()"><span class="si-icon">📂</span>Saved Scenarios</button>
+      <button class="sidenav-item" onclick="shareURL()"><span class="si-icon">🔗</span>Share Link</button>
+      <button class="sidenav-item" onclick="toggleTheme()"><span class="si-icon" id="sideThemeIcon">🌙</span>Toggle Theme</button>
+      <button class="sidenav-item" onclick="resetAll()"><span class="si-icon">🔄</span>Reset Inputs</button>
+    </div>
+  </div>
+  <div class="sidenav-footer">
+    <div style="font-size:.65rem;color:var(--text3);text-align:center">Works offline · No data stored externally<br><span style="color:var(--text3);font-size:.6rem">v2.0 — All calc on-device</span></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-shell">
+
+<!-- ═══ DASHBOARD ═══ -->
+<section class="page active" id="page-dashboard">
+  <div class="page-header">
+    <h2>Dashboard</h2>
+    <p>Your loan + SIP snapshot at current settings</p>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi kl"><div class="kpi-label">Total Loan Outgo</div><div class="kpi-val" id="d_outgo">₹—</div><div class="kpi-sub" id="d_outgo_s">EMI × N</div></div>
+    <div class="kpi ks"><div class="kpi-label">MF Corpus</div><div class="kpi-val" id="d_corpus">₹—</div><div class="kpi-sub" id="d_corpus_s">at tenure end</div></div>
+    <div class="kpi kw"><div class="kpi-label">Sweet Spot</div><div class="kpi-val" id="d_sweet">—</div><div class="kpi-sub">months to freedom</div></div>
+    <div class="kpi kp"><div class="kpi-label">Net Gain</div><div class="kpi-val" id="d_net">₹—</div><div class="kpi-sub">Corpus − Outgo</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--sweet-d);border:1px solid var(--sweet)">🎯</div><div><div class="card-title">Coverage Ratio</div><div class="card-sub">SIP Corpus ÷ Total Loan Outgo</div></div></div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div class="donut-outer" style="width:130px;height:130px;position:relative;flex-shrink:0">
+          <canvas id="donutC" style="display:block;width:130px;height:130px"></canvas>
+          <div class="cn" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none"><div class="cn-val" id="d_pct">—%</div><div class="cn-lbl">covered</div></div>
+        </div>
+        <div style="flex:1;min-width:110px;display:flex;flex-direction:column;gap:9px">
+          <div><div class="sl">Monthly EMI</div><div class="sv" style="color:var(--loan)" id="d_emi">₹—</div></div>
+          <div><div class="sl">Monthly SIP</div><div class="sv" style="color:var(--sip)" id="d_sip">₹—</div></div>
+          <div><div class="sl">Tenure</div><div class="sv" style="color:var(--purple)" id="d_ten">—</div></div>
+          <div><div class="sl">Tax Saved / yr</div><div class="sv" style="color:var(--sweet)" id="d_tax">₹—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--sip-d);border:1px solid var(--sip)">📈</div><div><div class="card-title">Wealth Trajectory</div><div class="card-sub">3 paths: Loan+SIP vs No-Loan SIP vs Do Nothing</div></div></div>
+    <div class="card-body"><div style="height:200px"><canvas id="wealthC"></canvas></div></div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--purple-d);border:1px solid var(--purple)">🔥</div><div><div class="card-title">Sweet Spot Heatmap</div><div class="card-sub">Tenure (months) across EMI Capacity vs MF Return</div></div></div>
+    <div class="card-body" id="heatmapBody"><div style="height:140px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:.78rem">Loading heatmap…</div></div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--loan-d);border:1px solid var(--loan)">💰</div><div><div class="card-title">Monthly Flow</div><div class="card-sub">How your capacity is split each month</div></div></div>
+    <div class="card-body"><div style="height:70px"><canvas id="flowC"></canvas></div>
+      <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--text2)"><span style="width:9px;height:9px;border-radius:3px;background:var(--loan);display:inline-block"></span>EMI <span style="color:var(--loan);font-weight:700;font-family:'JetBrains Mono',monospace" id="d_fl_emi">—</span></div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--text2)"><span style="width:9px;height:9px;border-radius:3px;background:var(--sip);display:inline-block"></span>SIP <span style="color:var(--sip);font-weight:700;font-family:'JetBrains Mono',monospace" id="d_fl_sip">—</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">📅</div><div><div class="card-title">Freedom Timeline</div><div class="card-sub">Visual journey to loan freedom</div></div></div>
+    <div class="card-body" id="timelineBody"></div>
+  </div>
+</section>
+
+<!-- ═══ CALCULATOR ═══ -->
+<section class="page" id="page-calc">
+  <div class="page-header"><h2>Calculator</h2><p>Adjust tenure until SIP corpus ≥ total loan outgo</p></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">⚙️</div><div><div class="card-title">Loan Parameters</div></div></div>
+    <div class="card-body">
+      <div class="igrid">
+        <div class="fg"><label class="lc">Loan Amount</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="loanAmt" value="1000000" min="10000" step="50000" oninput="onInp()"></div></div>
+        <div class="fg"><label class="lc">Interest Rate</label><div class="fiw"><input class="fi" type="number" id="rate" value="9.99" min="1" max="36" step="0.01" oninput="onInp()" style="padding-left:12px"><span class="fsfx">% p.a.</span></div></div>
+        <div class="fg"><label>FC Charge (before 12m)</label><div class="fiw"><input class="fi" type="number" id="fcCharge" value="4" min="0" max="10" step="0.5" oninput="onInp()" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+        <div class="fg"><label class="pc">💜 EMI Capacity / mo</label><div class="fiw"><span class="fpfx">₹</span><input class="fi pc" type="number" id="emiCap" value="50000" min="1000" step="1000" oninput="onInp()"></div></div>
+        <div class="fg"><label class="sc">📈 MF Return (CAGR)</label><div class="fiw"><input class="fi sc" type="number" id="mfReturn" value="12" min="1" max="40" step="0.5" oninput="onInp()" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+        <div class="fg"><label style="font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--sweet)">🔼 SIP Step-Up / yr<span style="display:block;font-size:.58rem;color:var(--text3);text-transform:none;letter-spacing:0;font-weight:400;margin-top:1px">SIP grows by this % each year</span></label><div class="fiw"><input class="fi" style="border-color:rgba(16,185,129,.4)" type="number" id="stepUp" value="0" min="0" max="30" step="1" oninput="onInp()" style="padding-left:12px"><span class="fsfx">%/yr</span></div></div>
+        <div class="fg"><label>Monthly Income (for 40% rule)</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="income" value="125000" min="0" step="5000" oninput="onInp()"></div></div>
+        <div class="fg"><label class="gc">Tax Bracket</label><div class="fiw"><select id="taxBracket" onchange="onInp()" style="padding-left:10px;font-size:.85rem"><option value="0">0% (No tax)</option><option value="5">5%</option><option value="20">20%</option><option value="30" selected>30%</option></select></div></div>
+      </div>
+      <div style="margin-top:12px;padding:9px 12px;border-radius:9px;font-size:.72rem;font-family:'JetBrains Mono',monospace" id="affordBox"></div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--purple-d);border:1px solid var(--purple)">📅</div><div><div class="card-title">Tenure Selector</div><div class="card-sub">Loan tenure = SIP tenure</div></div></div>
+    <div class="card-body">
+      <div class="t-header">
+        <div class="t-num" id="tenDisp">24<sub>months · 2.0 yrs</sub></div>
+        <div class="tq-row">
+          <button class="tq" onclick="setT(12)">1yr</button>
+          <button class="tq" onclick="setT(24)">2yr</button>
+          <button class="tq" onclick="setT(60)">5yr</button>
+          <button class="tq" onclick="setT(120)">10yr</button>
+          <button class="tq" onclick="setT(180)">15yr</button>
+          <button class="tq sweet-tq" onclick="jumpSweet()">🎯 Auto</button>
+        </div>
+      </div>
+      <div class="range-wrap">
+        <div class="sweet-pin" id="sweetPin"><div class="sp-line"></div><div class="sp-dot"></div><div class="sp-label" id="spLbl">Sweet</div></div>
+        <input class="rt" type="range" id="tenSlider" min="6" max="360" step="6" value="24" oninput="onInp()">
+        <div class="range-labs"><span>6m</span><span>2yr</span><span>5yr</span><span>10yr</span><span>15yr</span><span>20yr</span><span>30yr</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="formula">
+    <div>Monthly Capacity = <span class="fl">New EMI</span> + <span class="fs">SIP</span> &nbsp;|&nbsp; Both run <span class="fw" id="c_months">—</span> months</div>
+    <div><span class="fb" id="c_cap">₹50,000</span> = <span class="fl" id="c_emi">₹—</span> + <span class="fs" id="c_sipf">₹—</span> &nbsp;&nbsp; Step-Up: <span class="fs" id="c_step">0%/yr</span></div>
+    <div style="margin-top:3px">Goal: <span class="fs">MF Corpus</span> ≥ <span class="fl">Total Loan Outgo</span> → Loan is <span class="fw">FREE</span> 🎯</div>
+  </div>
+  <div class="gap"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="card">
+      <div class="card-head" style="padding:11px 13px"><div class="card-icon" style="background:var(--loan-d);border:1px solid var(--loan);width:24px;height:24px;font-size:.7rem">🏦</div><div><div class="card-title" style="color:var(--loan)">Loan</div></div></div>
+      <div class="card-body" style="padding:10px">
+        <div class="sg" style="gap:6px">
+          <div class="stat" style="padding:8px 9px"><div class="sl">EMI</div><div class="sv" style="color:var(--loan);font-size:.82rem" id="c_l_emi">—</div></div>
+          <div class="stat" style="padding:8px 9px"><div class="sl">Tenure</div><div class="sv" style="font-size:.82rem" id="c_l_ten">—</div></div>
+          <div class="stat" style="padding:8px 9px"><div class="sl">Interest</div><div class="sv" style="color:var(--red);font-size:.82rem" id="c_l_int">—</div></div>
+          <div class="stat" style="padding:8px 9px"><div class="sl">Tax Shield/yr</div><div class="sv" style="color:var(--sweet);font-size:.82rem" id="c_l_tax">—</div></div>
+          <div class="stat full al" style="padding:9px"><div class="sl">Total Outgo</div><div class="sv" id="c_l_tot">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head" style="padding:11px 13px"><div class="card-icon" style="background:var(--sip-d);border:1px solid var(--sip);width:24px;height:24px;font-size:.7rem">📈</div><div><div class="card-title" style="color:var(--sip)">SIP</div></div></div>
+      <div class="card-body" style="padding:10px">
+        <div class="sg" style="gap:6px">
+          <div class="stat" style="padding:8px 9px"><div class="sl">Monthly SIP</div><div class="sv" style="color:var(--sip);font-size:.82rem" id="c_s_sip">—</div></div>
+          <div class="stat" style="padding:8px 9px"><div class="sl">CAGR</div><div class="sv" style="font-size:.82rem" id="c_s_cagr">—</div></div>
+          <div class="stat" style="padding:8px 9px"><div class="sl">Invested</div><div class="sv" style="font-size:.82rem" id="c_s_inv">—</div></div>
+          <div class="stat" style="padding:8px 9px"><div class="sl">Gains</div><div class="sv" style="color:var(--sweet);font-size:.82rem" id="c_s_gains">—</div></div>
+          <div class="stat full as" style="padding:9px"><div class="sl">MF Corpus</div><div class="sv" id="c_s_corp">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">⚖️</div><div><div class="card-title">Head-to-Head</div><div class="card-sub">Loan Outgo vs SIP Corpus</div></div></div>
+    <div class="card-body">
+      <div class="prog"><div class="prog-top"><span class="prog-lbl">💸 Loan Outgo</span><span class="prog-v" style="color:var(--loan)" id="c_pg_l">—</span></div><div class="prog-bg"><div class="prog-fill pf-loan" id="c_bar_l" style="width:0%"></div></div></div>
+      <div class="prog"><div class="prog-top"><span class="prog-lbl">📈 SIP Corpus</span><span class="prog-v" style="color:var(--sip)" id="c_pg_s">—</span></div><div class="prog-bg"><div class="prog-fill pf-sip" id="c_bar_s" style="width:0%"></div></div></div>
+      <div class="sg3" style="margin-top:10px">
+        <div class="stat"><div class="sl">Coverage</div><div class="sv" id="c_ratio">—</div></div>
+        <div class="stat"><div class="sl">Net Gain</div><div class="sv" id="c_netg">—</div></div>
+        <div class="stat"><div class="sl">Sweet Spot</div><div class="sv" style="color:var(--sweet);font-size:.78rem" id="c_sweet">—</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="verdict vb" id="calcV">
+    <div class="v-icon">⏳</div><div class="v-title">Calculating…</div><div class="v-body" id="calcVb"></div>
+  </div>
+</section>
+
+<!-- ═══ ANALYSIS ═══ -->
+<section class="page" id="page-analysis">
+  <div class="page-header"><h2>Analysis</h2><p>Deep dive into your loan + SIP dynamics</p></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--sip-d);border:1px solid var(--sip)">📈</div><div><div class="card-title">Corpus vs Outgo Over Time</div><div class="card-sub">See exactly when they cross</div></div></div>
+    <div class="card-body"><div style="height:200px"><canvas id="growthC"></canvas></div></div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--loan-d);border:1px solid var(--loan)">💹</div><div><div class="card-title">Cumulative Interest vs MF Gains</div></div></div>
+    <div class="card-body"><div style="height:180px"><canvas id="intGainsC"></canvas></div></div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">🥧</div><div><div class="card-title">Cost Breakdown</div><div class="card-sub">Where every rupee goes</div></div></div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="width:150px;height:150px;flex-shrink:0"><canvas id="pieC" width="150" height="150"></canvas></div>
+        <div style="flex:1;min-width:100px;display:flex;flex-direction:column;gap:8px">
+          <div class="stat"><div class="sl">Principal</div><div class="sv" id="a_prin">—</div></div>
+          <div class="stat"><div class="sl">Total Interest</div><div class="sv" style="color:var(--red)" id="a_int">—</div></div>
+          <div class="stat"><div class="sl">MF Gains</div><div class="sv" style="color:var(--sweet)" id="a_gains">—</div></div>
+          <div class="stat"><div class="sl">Tax Saved (total)</div><div class="sv" style="color:var(--sweet)" id="a_tax">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--purple-d);border:1px solid var(--purple)">📋</div><div><div class="card-title">Amortization + SIP Table</div><div class="card-sub">🎯 = sweet spot row</div></div></div>
+    <div class="card-body" style="padding:0">
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Mo</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Outstanding</th><th>SIP</th><th>Corpus</th><th>Coverage</th></tr></thead>
+        <tbody id="amortBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMPARE ═══ -->
+<section class="page" id="page-compare">
+  <div class="page-header"><h2>Compare</h2><p>Compare up to 3 loan scenarios side-by-side</p></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">➕</div><div><div class="card-title">Add Comparison Scenario</div></div></div>
+    <div class="card-body">
+      <div class="igrid">
+        <div class="fg"><label>Label</label><div class="fiw"><input class="fi" type="text" id="cmp_label" placeholder="e.g. Home Loan" style="padding-left:12px;font-family:'Inter',sans-serif"></div></div>
+        <div class="fg"><label class="lc">Loan Amount</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="cmp_P" value="1000000" step="50000"></div></div>
+        <div class="fg"><label class="lc">Interest %</label><div class="fiw"><input class="fi" type="number" id="cmp_r" value="9.99" step="0.01" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+        <div class="fg"><label class="pc">EMI Capacity</label><div class="fiw"><span class="fpfx">₹</span><input class="fi pc" type="number" id="cmp_cap" value="50000" step="1000"></div></div>
+        <div class="fg"><label class="sc">MF Return %</label><div class="fiw"><input class="fi sc" type="number" id="cmp_mf" value="12" step="0.5" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+        <div class="fg"><label style="color:var(--sweet);font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em">📈 SIP Step-Up / yr<span style="display:block;font-size:.58rem;color:var(--text3);text-transform:none;letter-spacing:0;font-weight:400;margin-top:1px">Annual SIP increase % (salary growth)</span></label><div class="fiw"><input class="fi" style="border-color:rgba(16,185,129,.4)" type="number" id="cmp_step" value="0" step="1" style="padding-left:12px"><span class="fsfx">%/yr</span></div></div>
+      </div>
+      <button class="btn-primary" style="margin-top:12px;width:100%;padding:10px" onclick="addCompare()">➕ Add to Comparison</button>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div id="compareResults"></div>
+  <div class="gap"></div>
+  <div class="card" id="compareChartCard" style="display:none">
+    <div class="card-head"><div class="card-icon" style="background:var(--sip-d);border:1px solid var(--sip)">📊</div><div><div class="card-title">Comparison Chart</div><div class="card-sub">Corpus growth — all scenarios</div></div></div>
+    <div class="card-body"><div style="height:200px"><canvas id="compareC"></canvas></div></div>
+  </div>
+</section>
+
+<!-- ═══ TOOLS ═══ -->
+<section class="page" id="page-tools">
+  <div class="page-header"><h2>Tools</h2><p>Advanced calculators & planners</p></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTool('reverse')">🔄 Reverse</button>
+    <button class="tab" onclick="switchTool('tax')">🧾 Tax Shield</button>
+    <button class="tab" onclick="switchTool('prepay')">💰 Prepayment</button>
+    <button class="tab" onclick="switchTool('rate')">⚡ Rate Alert</button>
+  </div>
+
+  <!-- REVERSE TOOL -->
+  <div id="tool-reverse">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:var(--sweet-d);border:1px solid var(--sweet)">🔄</div><div><div class="card-title">Goal-Reverse Calculator</div><div class="card-sub">What do I need to be free in X months?</div></div></div>
+      <div class="card-body">
+        <div class="igrid">
+          <div class="fg"><label class="lc">Loan Amount</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="rv_P" value="1000000" step="50000" oninput="calcReverse()"></div></div>
+          <div class="fg"><label class="lc">Interest Rate</label><div class="fiw"><input class="fi" type="number" id="rv_r" value="9.99" step="0.01" oninput="calcReverse()" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+          <div class="fg"><label class="gc">Target: Free in</label><div class="fiw"><input class="fi gc" type="number" id="rv_N" value="60" step="6" oninput="calcReverse()" style="padding-left:12px"><span class="fsfx">months</span></div></div>
+          <div class="fg"><label class="sc">MF Return</label><div class="fiw"><input class="fi sc" type="number" id="rv_mf" value="12" step="0.5" oninput="calcReverse()" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+        </div>
+        <div style="margin-top:14px;padding:14px;background:var(--surface2);border-radius:11px" id="reverseResult">
+          <div style="font-size:.72rem;color:var(--text3);text-align:center">Enter values above to calculate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAX TOOL -->
+  <div id="tool-tax" style="display:none">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:var(--sweet-d);border:1px solid var(--sweet)">🧾</div><div><div class="card-title">Tax Shield Calculator</div><div class="card-sub">Home loan tax benefits under Sec 24b + Sec 80C</div></div></div>
+      <div class="card-body">
+        <div class="igrid">
+          <div class="fg"><label class="lc">Annual Interest Paid</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="tx_int" value="95000" step="5000" oninput="calcTax()"></div></div>
+          <div class="fg"><label class="lc">Annual Principal Paid</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="tx_pri" value="60000" step="5000" oninput="calcTax()"></div></div>
+          <div class="fg"><label class="gc">Tax Bracket</label><div class="fiw"><select id="tx_bracket" onchange="calcTax()" style="padding-left:10px"><option value="5">5%</option><option value="20">20%</option><option value="30" selected>30%</option></select></div></div>
+          <div class="fg"><label>Loan Type</label><div class="fiw"><select id="tx_type" onchange="calcTax()" style="padding-left:10px"><option value="home">Home Loan</option><option value="other">Other Loan</option></select></div></div>
+        </div>
+        <div style="margin-top:14px" id="taxResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREPAYMENT TOOL -->
+  <div id="tool-prepay" style="display:none">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:var(--purple-d);border:1px solid var(--purple)">💰</div><div><div class="card-title">Lump Sum Prepayment Simulator</div><div class="card-sub">What if you prepay a lump sum at month X?</div></div></div>
+      <div class="card-body">
+        <div class="igrid">
+          <div class="fg"><label class="lc">Loan Amount</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="pp_P" value="1000000" step="50000" oninput="calcPrepay()"></div></div>
+          <div class="fg"><label class="lc">Interest Rate</label><div class="fiw"><input class="fi" type="number" id="pp_r" value="9.99" step="0.01" oninput="calcPrepay()" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+          <div class="fg"><label>Original Tenure</label><div class="fiw"><input class="fi" type="number" id="pp_N" value="120" step="6" oninput="calcPrepay()" style="padding-left:12px"><span class="fsfx">months</span></div></div>
+          <div class="fg"><label class="gc">Prepay Amount</label><div class="fiw"><span class="fpfx">₹</span><input class="fi gc" type="number" id="pp_lump" value="200000" step="50000" oninput="calcPrepay()"></div></div>
+          <div class="fg"><label>At Month</label><div class="fiw"><input class="fi" type="number" id="pp_at" value="12" step="1" min="1" oninput="calcPrepay()" style="padding-left:12px"><span class="fsfx">month</span></div></div>
+          <div class="fg"><label>After Prepay</label><div class="fiw"><select id="pp_mode" onchange="calcPrepay()" style="padding-left:10px"><option value="tenure">Reduce Tenure</option><option value="emi">Reduce EMI</option></select></div></div>
+        </div>
+        <div style="margin-top:14px" id="prepayResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RATE ALERT TOOL -->
+  <div id="tool-rate" style="display:none">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:var(--loan-d);border:1px solid var(--loan)">⚡</div><div><div class="card-title">Interest Rate Sensitivity</div><div class="card-sub">What if rates change by ±1–3%?</div></div></div>
+      <div class="card-body">
+        <div class="igrid">
+          <div class="fg"><label class="lc">Loan Amount</label><div class="fiw"><span class="fpfx">₹</span><input class="fi" type="number" id="ra_P" value="1000000" step="50000" oninput="calcRateAlert()"></div></div>
+          <div class="fg"><label class="lc">Current Rate</label><div class="fiw"><input class="fi" type="number" id="ra_r" value="9.99" step="0.01" oninput="calcRateAlert()" style="padding-left:12px"><span class="fsfx">%</span></div></div>
+          <div class="fg"><label>Tenure</label><div class="fiw"><input class="fi" type="number" id="ra_N" value="120" step="6" oninput="calcRateAlert()" style="padding-left:12px"><span class="fsfx">months</span></div></div>
+          <div class="fg"><label class="pc">EMI Capacity</label><div class="fiw"><span class="fpfx">₹</span><input class="fi pc" type="number" id="ra_cap" value="50000" step="1000" oninput="calcRateAlert()"></div></div>
+        </div>
+        <div style="margin-top:14px" id="rateResult"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="page" id="page-about">
+  <div class="page-header"><h2>About</h2><p>LoanSIP — Your financial freedom tool</p></div>
+  <div class="card">
+    <div class="card-body">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,var(--sip),var(--sweet));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🎯</div>
+        <div><div style="font-size:.95rem;font-weight:700">LoanSIP v2.0</div><div style="font-size:.72rem;color:var(--text2);margin-top:2px">Loan Freedom Calculator</div></div>
+      </div>
+      <p style="font-size:.78rem;color:var(--text2);line-height:1.75">LoanSIP finds the sweet spot tenure where your SIP corpus fully offsets total loan payments — making your loan <strong style="color:var(--sweet)">effectively free</strong>. Includes step-up SIP, tax shield, scenario saving, reverse calculator, and more.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:11px">
+        <span class="chip chip-g">✓ Works Offline</span>
+        <span class="chip chip-b">✓ No Data Sent</span>
+        <span class="chip chip-o">✓ Free Forever</span>
+        <span class="chip chip-p">✓ Open Source</span>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">💡</div><div><div class="card-title">The Core Idea</div></div></div>
+    <div class="card-body">
+      <div class="formula" style="margin-bottom:11px">
+        <div>1. Fixed monthly spend = <span class="fb">EMI Capacity</span></div>
+        <div>2. Extend tenure → <span class="fl">EMI drops</span> → more for <span class="fs">SIP</span></div>
+        <div>3. SIP grows via compounding over same tenure</div>
+        <div>4. <span class="fb">Sweet Spot</span>: <span class="fs">Corpus</span> ≥ <span class="fl">Total EMI Paid</span></div>
+        <div>5. Step-Up SIP accelerates this significantly</div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:var(--surface2);border:1px solid var(--border)">❓</div><div><div class="card-title">FAQs</div></div></div>
+    <div class="card-body" style="padding:4px 14px">
+      <div class="faq-item"><div class="faq-q" onclick="faqToggle(this)">What is the sweet spot? <span class="faq-arrow">▼</span></div><div class="faq-a">The exact tenure where your SIP corpus ≥ total EMI payments. At this point your loan is mathematically free.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="faqToggle(this)">What is Step-Up SIP? <span class="faq-arrow">▼</span></div><div class="faq-a">SIP amount increases by a fixed % each year (e.g. 10%/yr as salary grows). This dramatically accelerates the sweet spot.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="faqToggle(this)">How is tax shield calculated? <span class="faq-arrow">▼</span></div><div class="faq-a">Home loan interest up to ₹2L/yr is deductible under Sec 24b, and principal up to ₹1.5L/yr under Sec 80C. Combined savings depend on your tax bracket.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="faqToggle(this)">Is this financial advice? <span class="faq-arrow">▼</span></div><div class="faq-a">No. This is a planning tool for illustration only. MF returns are not guaranteed. Consult a SEBI-registered financial advisor.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="faqToggle(this)">Can I save my scenarios? <span class="faq-arrow">▼</span></div><div class="faq-a">Yes! Tap the 📂 icon in the top bar. Scenarios are saved to your browser's localStorage — no data leaves your device.</div></div>
+    </div>
+  </div>
+  <div class="gap"></div>
+  <div style="text-align:center;padding:18px 0;font-size:.68rem;color:var(--text3)">LoanSIP · Not financial advice · All calculations on-device<br>Host on GitHub Pages — single HTML file, no server needed.</div>
+</section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottomnav">
+  <div class="bottomnav-inner">
+    <button class="btab active" data-bp="dashboard" onclick="nav('dashboard')"><span class="bt-icon">📊</span><span class="bt-label">Dashboard</span></button>
+    <button class="btab" data-bp="calc" onclick="nav('calc')"><span class="bt-icon">🧮</span><span class="bt-label">Calc</span></button>
+    <button class="btab" data-bp="analysis" onclick="nav('analysis')"><span class="bt-icon">📈</span><span class="bt-label">Analysis</span></button>
+    <button class="btab" data-bp="compare" onclick="nav('compare')"><span class="bt-icon">⚖️</span><span class="bt-label">Compare</span></button>
+    <button class="btab" data-bp="tools" onclick="nav('tools')"><span class="bt-icon">🔧</span><span class="bt-label">Tools</span></button>
+  </div>
+</nav>
+
+<!-- SCENARIOS MODAL -->
+<div class="modal-bg" id="scenarioModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <span class="modal-title">📂 Saved Scenarios</span>
+      <button class="modal-close" onclick="closeModal('scenarioModal')">✕</button>
+    </div>
+    <button class="btn-primary" style="width:100%;padding:9px;margin-bottom:14px" onclick="saveScenario()">💾 Save Current as Scenario</button>
+    <div id="scenarioList"><div style="text-align:center;color:var(--text3);font-size:.78rem;padding:20px">No saved scenarios yet</div></div>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="ob-overlay" id="obOverlay">
+  <div class="ob-card">
+    <div class="ob-dots">
+      <div class="ob-dot active" id="ob0"></div>
+      <div class="ob-dot" id="ob1"></div>
+      <div class="ob-dot" id="ob2"></div>
+    </div>
+    <div class="ob-icon" id="obIcon">🎯</div>
+    <div class="ob-title" id="obTitle">Welcome to LoanSIP</div>
+    <div class="ob-body" id="obBody">Find the exact loan tenure where your SIP investments grow enough to cover everything you paid to the bank — making your loan free.</div>
+    <div class="ob-actions">
+      <span class="ob-skip" onclick="closeOB()">Skip</span>
+      <button class="ob-next" onclick="nextOB()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   MATH CORE
+═══════════════════════════════════════════════════ */
+const INR = n => '₹' + Math.abs(Math.round(n)).toLocaleString('en-IN');
+const SGN = n => (n >= 0 ? '+' : '−') + INR(Math.abs(n));
+
+function calcEMI(P, r, N) {
+  if (!r || !N) return P / (N || 1);
+  return P * r * Math.pow(1+r, N) / (Math.pow(1+r, N) - 1);
+}
+
+// SIP corpus with optional step-up (annual % increase)
+function sipCorpusStepUp(sip0, mfR, N, stepUpPct) {
+  const su = stepUpPct / 100;
+  let c = 0, sip = sip0;
+  for (let m = 1; m <= N; m++) {
+    if (m > 1 && (m - 1) % 12 === 0) sip *= (1 + su);
+    c = (c + sip) * (1 + mfR);
+  }
+  return c;
+}
+
+function findSweet(P, r, mfR, cap, su, maxN) {
+  for (let N = 1; N <= maxN; N++) {
+    const e = calcEMI(P, r, N);
+    if (e > cap + 0.5) continue;
+    const s = Math.max(0, cap - e);
+    if (!s) continue;
+    if (sipCorpusStepUp(s, mfR, N, su) >= e * N) return N;
+  }
+  return null;
+}
+
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+let S = {
+  P:1000000, annual:9.99, fcPct:4, cap:50000, mfCAGR:12, N:24,
+  stepUp:0, income:125000, taxBracket:30,
+  r:0, mfR:0, emiN:0, sipAmt:0,
+  totalOutgo:0, interest:0, corpus:0,
+  invested:0, gains:0, net:0, ratio:0, sweetN:null
+};
+
+function readInputs() {
+  S.P          = +document.getElementById('loanAmt').value  || 1000000;
+  S.annual     = +document.getElementById('rate').value     || 9.99;
+  S.fcPct      = +document.getElementById('fcCharge').value || 4;
+  S.cap        = +document.getElementById('emiCap').value   || 50000;
+  S.mfCAGR     = +document.getElementById('mfReturn').value || 12;
+  S.N          = +document.getElementById('tenSlider').value || 24;
+  S.stepUp     = +document.getElementById('stepUp').value   || 0;
+  S.income     = +document.getElementById('income').value   || 125000;
+  S.taxBracket = +document.getElementById('taxBracket').value || 30;
+}
+function compute() {
+  const {P, annual, cap, mfCAGR, N, stepUp, taxBracket} = S;
+  S.r      = annual / 12 / 100;
+  S.mfR    = Math.pow(1 + mfCAGR / 100, 1 / 12) - 1;
+  S.emiN   = calcEMI(P, S.r, N);
+  S.sipAmt = Math.max(0, cap - S.emiN);
+  S.totalOutgo = S.emiN * N;
+  S.interest   = S.totalOutgo - P;
+  S.corpus     = sipCorpusStepUp(S.sipAmt, S.mfR, N, stepUp);
+  S.invested   = S.sipAmt * N;
+  S.gains      = S.corpus - S.invested;
+  S.net        = S.corpus - S.totalOutgo;
+  S.ratio      = S.totalOutgo > 0 ? S.corpus / S.totalOutgo : 0;
+  S.sweetN     = findSweet(P, S.r, S.mfR, cap, stepUp, 360);
+  // Tax shield (home loan approx)
+  const annInt  = Math.min(S.interest / N * 12, 200000); // Sec24b cap 2L
+  const annPri  = Math.min(P / N * 12, 150000);          // 80C cap 1.5L
+  S.taxPerYear  = (annInt + annPri) * (taxBracket / 100);
+  S.taxTotal    = S.taxPerYear * (N / 12);
+}
+
+/* ═══════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════ */
+let curPage = 'dashboard';
+function nav(page) {
+  curPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('[data-p]').forEach(a => a.classList.toggle('active', a.dataset.p === page));
+  document.querySelectorAll('[data-sp]').forEach(b => b.classList.toggle('active', b.dataset.sp === page));
+  document.querySelectorAll('[data-bp]').forEach(b => b.classList.toggle('active', b.dataset.bp === page));
+  closeSide();
+  if (page === 'dashboard') buildDashboard();
+  if (page === 'analysis')  buildAnalysis();
+  if (page === 'compare')   renderCompare();
+  // scroll top
+  document.querySelector('.main-shell').scrollTop = 0;
+}
+function toggleSide() {
+  document.getElementById('sidenav').classList.toggle('open');
+  document.getElementById('sideOverlay').classList.toggle('open');
+}
+function closeSide() {
+  document.getElementById('sidenav').classList.remove('open');
+  document.getElementById('sideOverlay').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════════════════
+   INPUT + SLIDER
+═══════════════════════════════════════════════════ */
+function setT(months) {
+  document.getElementById('tenSlider').value = months;
+  onInp();
+}
+function jumpSweet() {
+  readInputs(); compute();
+  if (S.sweetN) {
+    const snapped = Math.min(Math.ceil(S.sweetN / 6) * 6, 360);
+    document.getElementById('tenSlider').value = snapped;
+    onInp();
+    toast('🎯 Jumped to sweet spot: ' + snapped + ' months!');
+  } else {
+    toast('⚠️ No sweet spot within 360m. Try higher MF return.', 'warn');
+  }
+}
+function resetAll() {
+  ['loanAmt','rate','fcCharge','emiCap','mfReturn','tenSlider','stepUp','income']
+    .forEach((id,i) => {
+      const vals = [1000000,9.99,4,50000,12,24,0,125000];
+      document.getElementById(id).value = vals[i];
+    });
+  document.getElementById('taxBracket').value = 30;
+  onInp();
+  toast('🔄 Inputs reset to defaults');
+}
+
+function onInp() {
+  readInputs(); compute();
+  updateSlider(); updateCalc();
+  if (curPage === 'dashboard') buildDashboard();
+  if (curPage === 'analysis')  buildAnalysis();
+}
+
+function updateSlider() {
+  const sl = document.getElementById('tenSlider');
+  const N = S.N, mn = +sl.min, mx = +sl.max;
+  sl.style.setProperty('--fill', ((N-mn)/(mx-mn)*100).toFixed(1)+'%');
+  document.getElementById('tenDisp').innerHTML = `${N}<sub>months · ${(N/12).toFixed(1)} yrs</sub>`;
+  const pin = document.getElementById('sweetPin');
+  if (S.sweetN) {
+    pin.style.display = 'block';
+    pin.style.left = ((S.sweetN-mn)/(mx-mn)*100).toFixed(1)+'%';
+    document.getElementById('spLbl').textContent = S.sweetN+'m ✓';
+  } else pin.style.display = 'none';
+}
+
+function set(id, val, color) {
+  const el = document.getElementById(id); if (!el) return;
+  el.textContent = val; if (color) el.style.color = color;
+}
+
+/* ═══════════════════════════════════════════════════
+   CALC PANEL
+═══════════════════════════════════════════════════ */
+function updateCalc() {
+  const {P,cap,mfCAGR,N,annual,emiN,sipAmt,totalOutgo,interest,
+         corpus,invested,gains,net,ratio,sweetN,stepUp,taxPerYear} = S;
+
+  set('c_cap', INR(cap)); set('c_emi', INR(emiN)); set('c_sipf', INR(sipAmt));
+  set('c_months', N+''); set('c_step', stepUp+'%/yr');
+
+  // affordability
+  const rec = S.income * 0.4;
+  const ab = document.getElementById('affordBox');
+  if (emiN > rec) {
+    ab.style.background='rgba(239,68,68,.07)'; ab.style.border='1px solid rgba(239,68,68,.3)';
+    ab.style.color='var(--red)';
+    ab.textContent = `⚠️ EMI ${INR(emiN)}/mo exceeds 40% of income (${INR(rec)}/mo). Consider a longer tenure.`;
+  } else {
+    ab.style.background='var(--sweet-d)'; ab.style.border='1px solid rgba(16,185,129,.3)';
+    ab.style.color='var(--sweet)';
+    ab.textContent = `✓ EMI ${INR(emiN)}/mo is within 40% of income (${INR(rec)}/mo). Healthy affordability.`;
+  }
+
+  set('c_l_emi', INR(emiN)); set('c_l_ten', N+'m');
+  set('c_l_int', INR(interest)); set('c_l_tax', INR(taxPerYear)+'/yr');
+  set('c_l_tot', INR(totalOutgo));
+  set('c_s_sip', INR(sipAmt)); set('c_s_cagr', mfCAGR+'%');
+  set('c_s_inv', INR(invested)); set('c_s_gains', SGN(gains), gains>=0?'var(--sweet)':'var(--red)');
+  set('c_s_corp', INR(corpus), ratio>=1?'var(--sweet)':'var(--sip)');
+
+  const big = Math.max(totalOutgo,corpus,1);
+  set('c_pg_l',INR(totalOutgo)); set('c_pg_s',INR(corpus));
+  document.getElementById('c_bar_l').style.width=(totalOutgo/big*100).toFixed(1)+'%';
+  document.getElementById('c_bar_s').style.width=(corpus/big*100).toFixed(1)+'%';
+  const rc = ratio>=1?'var(--sweet)':ratio>=.8?'var(--yellow)':'var(--red)';
+  set('c_ratio',(ratio*100).toFixed(1)+'%',rc);
+  set('c_netg',SGN(net),net>=0?'var(--sweet)':'var(--red)');
+  set('c_sweet',sweetN?sweetN+'m ('+( sweetN/12).toFixed(1)+'yr)':'>360m');
+
+  const vc=document.getElementById('calcV'), vb=document.getElementById('calcVb');
+  if(sipAmt<100){
+    vc.className='verdict ve';vc.querySelector('.v-icon').textContent='⚠️';
+    vc.querySelector('.v-title').textContent='SIP Too Small';
+    vb.innerHTML=`Capacity ${INR(cap)} barely covers EMI ${INR(emiN)}. Only ${INR(sipAmt)}/mo for SIP. Increase capacity or reduce loan amount.`;
+  } else if(net>=0){
+    vc.className='verdict vw';vc.querySelector('.v-icon').textContent='🎉';
+    vc.querySelector('.v-title').textContent='Sweet Spot — Loan is FREE!';
+    vb.innerHTML=`Pay <b>${INR(emiN)}</b> EMI + invest <b>${INR(sipAmt)}</b> SIP for <b>${N} months</b>. Corpus <b style="color:var(--sweet)">${INR(corpus)}</b> ≥ outgo <b>${INR(totalOutgo)}</b>. Net: <b style="color:var(--sweet)">${SGN(net)}</b> 🚀`;
+  } else if(ratio>=.85){
+    vc.className='verdict vc';vc.querySelector('.v-icon').textContent='🔥';
+    vc.querySelector('.v-title').textContent='Almost There!';
+    vb.innerHTML=`${(ratio*100).toFixed(1)}% covered. Short by <b style="color:var(--red)">${INR(Math.abs(net))}</b>.${sweetN?` Sweet spot: <b style="color:var(--sweet)">${sweetN}m</b> — tap 🎯 Auto.`:' Increase MF return.'}`;
+  } else {
+    vc.className='verdict vb';vc.querySelector('.v-icon').textContent='📊';
+    vc.querySelector('.v-title').textContent='Keep Extending';
+    vb.innerHTML=`${(ratio*100).toFixed(1)}% coverage. Gap: <b style="color:var(--red)">${INR(Math.abs(net))}</b>.${sweetN?` Sweet spot: <b style="color:var(--sweet)">${sweetN}m</b> — tap 🎯 Auto.`:' No sweet spot within 360m.'}`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   CHARTS
+═══════════════════════════════════════════════════ */
+const MONO = "'JetBrains Mono',monospace";
+const GC   = 'rgba(30,44,72,0.9)';
+const TC   = '#4a6080';
+
+function dpr() { return window.devicePixelRatio || 1; }
+
+function setupCanvas(id, wPx, hPx) {
+  const c = document.getElementById(id); if(!c) return null;
+  const parent = c.parentElement;
+  const W = wPx || (parent && parent.offsetWidth > 0 ? parent.offsetWidth : 0) || c.offsetWidth || 320;
+  const H = hPx || 200;
+  c.style.width = '100%'; c.style.height = H + 'px'; c.style.display = 'block';
+  c.width  = W * dpr(); c.height = H * dpr();
+  const ctx = c.getContext('2d');
+  ctx.scale(dpr(), dpr());
+  ctx.clearRect(0,0,W,H);
+  return {ctx, W, H};
+}
+
+function lineChart(id, datasets, labels, opts={}) {
+  const cv = setupCanvas(id, null, opts.H||200); if(!cv) return;
+  const {ctx,W,H} = cv;
+  const pad = {t:18, r:14, b:34, l:54};
+  const cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
+  const allV = datasets.flatMap(d=>d.data).filter(v=>!isNaN(v));
+  const maxV = Math.max(...allV)*1.08, minV = Math.min(0,...allV);
+
+  // grid
+  for(let i=0;i<=4;i++){
+    const y=pad.t+cH/4*i;
+    ctx.strokeStyle=GC; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cW,y); ctx.stroke();
+    const v=maxV-(maxV-minV)/4*i;
+    ctx.fillStyle=TC; ctx.font='9px '+MONO; ctx.textAlign='right';
+    ctx.fillText(v>=1e7?(v/1e7).toFixed(1)+'Cr':v>=1e5?(v/1e5).toFixed(0)+'L':v>=1e3?(v/1e3).toFixed(0)+'K':Math.round(v), pad.l-3, y+3);
+  }
+  // x labels
+  const step=Math.ceil(labels.length/6);
+  ctx.fillStyle=TC; ctx.font='9px '+MONO; ctx.textAlign='center';
+  labels.forEach((l,i)=>{ if(i%step!==0)return; ctx.fillText(l, pad.l+(i/(labels.length-1))*cW, H-pad.b+13); });
+
+  // sweet line
+  if(opts.sweetX!=null){
+    const sx=pad.l+(opts.sweetX/(labels.length-1))*cW;
+    ctx.strokeStyle='rgba(16,185,129,.5)'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(sx,pad.t); ctx.lineTo(sx,pad.t+cH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#10b981'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('🎯',sx,pad.t-2);
+  }
+
+  datasets.forEach(ds=>{
+    const xF=(i)=>pad.l+(i/(ds.data.length-1))*cW;
+    const yF=(v)=>pad.t+(1-(v-minV)/(maxV-minV||1))*cH;
+
+    // fill
+    ctx.globalAlpha=0.1; ctx.fillStyle=ds.color;
+    ctx.beginPath();
+    ds.data.forEach((v,i)=>i===0?ctx.moveTo(xF(i),yF(v)):ctx.lineTo(xF(i),yF(v)));
+    ctx.lineTo(xF(ds.data.length-1),pad.t+cH); ctx.lineTo(pad.l,pad.t+cH); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha=1;
+
+    // line
+    ctx.strokeStyle=ds.color; ctx.lineWidth=2;
+    ctx.shadowColor=ds.color; ctx.shadowBlur=6;
+    ctx.beginPath();
+    ds.data.forEach((v,i)=>i===0?ctx.moveTo(xF(i),yF(v)):ctx.lineTo(xF(i),yF(v)));
+    ctx.stroke(); ctx.shadowBlur=0;
+  });
+
+  // legend
+  if(opts.legend){ let lx=pad.l;
+    opts.legend.forEach((l,i)=>{
+      ctx.fillStyle=datasets[i].color; ctx.fillRect(lx,pad.t-11,10,4);
+      ctx.fillStyle=TC; ctx.font='9px '+MONO; ctx.textAlign='left';
+      ctx.fillText(l,lx+13,pad.t-8); lx+=ctx.measureText(l).width+26;
+    });
+  }
+}
+
+function drawDonut(id, pct, c1, c2) {
+  const c=document.getElementById(id); if(!c) return;
+  const ctx=c.getContext('2d');
+  const sz=130;
+  c.style.width=sz+'px'; c.style.height=sz+'px'; c.style.display='block';
+  c.width=sz*dpr(); c.height=sz*dpr();
+  ctx.scale(dpr(),dpr());
+  const cx=sz/2,cy=sz/2,r=48,th=13;
+  ctx.clearRect(0,0,sz,sz);
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(30,44,72,.9)'; ctx.lineWidth=th; ctx.stroke();
+  const capped=Math.min(pct,1);
+  const g=ctx.createLinearGradient(cx-r,cy,cx+r,cy);
+  g.addColorStop(0,c1); g.addColorStop(1,c2||c1);
+  ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*capped);
+  ctx.strokeStyle=g; ctx.lineWidth=th; ctx.lineCap='round'; ctx.stroke();
+  if(capped>=1){ctx.shadowColor='#10b981';ctx.shadowBlur=16;ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2);ctx.strokeStyle='rgba(16,185,129,.25)';ctx.lineWidth=th+5;ctx.stroke();ctx.shadowBlur=0;}
+}
+
+function drawPie(id, slices) {
+  const c=document.getElementById(id); if(!c) return;
+  const ctx=c.getContext('2d');
+  const sz=150;
+  c.style.width=sz+'px'; c.style.height=sz+'px'; c.style.display='block';
+  c.width=sz*dpr(); c.height=sz*dpr();
+  ctx.scale(dpr(),dpr());
+  const cx=sz/2,cy=sz/2,r=58;
+  ctx.clearRect(0,0,sz,sz);
+  const tot=slices.reduce((a,s)=>a+Math.max(0,s.val),0); if(!tot) return;
+  let ang=-Math.PI/2;
+  slices.forEach(s=>{
+    if(s.val<=0) return;
+    const sw=(s.val/tot)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,ang,ang+sw); ctx.closePath();
+    ctx.fillStyle=s.color; ctx.fill(); ang+=sw;
+  });
+  ctx.beginPath(); ctx.arc(cx,cy,r*.55,0,Math.PI*2);
+  ctx.fillStyle=document.body.classList.contains('light')?'#fff':'#131d30'; ctx.fill();
+}
+
+function drawFlowBar(id, emi, sip) {
+  const c=document.getElementById(id); if(!c) return;
+  const ctx=c.getContext('2d');
+  const parent=c.parentElement;
+  const W=(parent&&parent.offsetWidth>0?parent.offsetWidth:c.offsetWidth)||300,H=70;
+  c.style.width='100%'; c.style.height=H+'px'; c.style.display='block';
+  c.width=W*dpr(); c.height=H*dpr();
+  ctx.scale(dpr(),dpr());
+  ctx.clearRect(0,0,W,H);
+  const tot=emi+sip||1; const bH=28; const y=(H-bH)/2; const p=12; const iW=W-p*2;
+  const emiW=iW*(emi/tot);
+  const g1=ctx.createLinearGradient(p,0,p+emiW,0); g1.addColorStop(0,'#f97316'); g1.addColorStop(1,'#fb923c');
+  ctx.fillStyle=g1; ctx.beginPath();
+  ctx.roundRect?ctx.roundRect(p,y,emiW,bH,[6,0,0,6]):ctx.rect(p,y,emiW,bH); ctx.fill();
+  const sipW=iW-emiW;
+  const g2=ctx.createLinearGradient(p+emiW,0,p+iW,0); g2.addColorStop(0,'#06b6d4'); g2.addColorStop(1,'#10b981');
+  ctx.fillStyle=g2; ctx.beginPath();
+  ctx.roundRect?ctx.roundRect(p+emiW,y,sipW,bH,[0,6,6,0]):ctx.rect(p+emiW,y,sipW,bH); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='bold 10px '+MONO; ctx.textAlign='center';
+  if(emiW>36) ctx.fillText((emi/tot*100).toFixed(0)+'%',p+emiW/2,y+bH/2+4);
+  if(sipW>36) ctx.fillText((sip/tot*100).toFixed(0)+'%',p+emiW+sipW/2,y+bH/2+4);
+}
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════════════ */
+function buildDashboard() {
+  const {P,cap,N,mfR,emiN,sipAmt,totalOutgo,corpus,gains,net,ratio,sweetN,r,mfCAGR,stepUp,taxPerYear,taxTotal} = S;
+
+  set('d_outgo',INR(totalOutgo)); set('d_outgo_s','EMI '+INR(emiN)+' × '+N+'m');
+  set('d_corpus',INR(corpus)); set('d_corpus_s',(ratio*100).toFixed(0)+'% of outgo');
+  set('d_sweet',sweetN?sweetN+'m':'>360m');
+  set('d_net',SGN(net),net>=0?'var(--sweet)':'var(--red)');
+  set('d_emi',INR(emiN)); set('d_sip',INR(sipAmt));
+  set('d_ten',N+'m ('+( N/12).toFixed(1)+'yr)');
+  set('d_tax',INR(taxPerYear)+'/yr');
+  set('d_pct',(ratio*100).toFixed(0)+'%');
+  set('d_fl_emi',INR(emiN)+'/mo'); set('d_fl_sip',INR(sipAmt)+'/mo');
+
+  drawDonut('donutC',ratio,ratio>=1?'#10b981':'#06b6d4',ratio>=1?'#34d399':'#10b981');
+
+  requestAnimationFrame(()=>{
+    // Wealth trajectory chart
+    const maxM=Math.min(N*2,180), ls=[], wLoanSip=[], wNoLoan=[], wNothing=[];
+    let corp=0, noLoanC=0;
+    for(let m=1;m<=maxM;m++){
+      let sip=sipAmt; if(stepUp>0) { const yrs=Math.floor((m-1)/12); sip*=Math.pow(1+stepUp/100,yrs); }
+      corp=(corp+sip)*(1+mfR);
+      noLoanC=(noLoanC+cap)*(1+mfR); // invest entire capacity if no loan
+      ls.push(m%12===0?m/12+'yr':m%6===0?'':m+'');
+      wLoanSip.push(corp - Math.max(0, emiN*m - corp)); // net wealth = corpus - remaining loan
+      wNoLoan.push(noLoanC);
+      wNothing.push(0);
+    }
+    // simpler: just show corpus vs outgo vs no-loan SIP
+    const maxM2=Math.min(N,120);
+    const lb2=[],ln1=[],ln2=[],ln3=[];
+    let c1=0,c2=0;
+    for(let m=1;m<=maxM2;m++){
+      let sip=sipAmt; if(stepUp>0){const y=Math.floor((m-1)/12);sip*=Math.pow(1+stepUp/100,y);}
+      c1=(c1+sip)*(1+mfR); c2=(c2+cap)*(1+mfR);
+      lb2.push(m%12===0?m/12+'yr':'');
+      ln1.push(c1); ln2.push(emiN*m); ln3.push(c2);
+    }
+    const swIdx=sweetN&&sweetN<=maxM2?sweetN-1:undefined;
+    lineChart('wealthC',
+      [{data:ln1,color:'#06b6d4'},{data:ln2,color:'#f97316'},{data:ln3,color:'#8b5cf6'}],
+      lb2,{legend:['SIP Corpus','Loan Outgo','If No Loan SIP'],sweetX:swIdx,H:200});
+
+    // Flow bar
+    drawFlowBar('flowC',emiN,sipAmt);
+
+    // Heatmap: EMI caps (rows) vs MF returns (cols) → sweet spot months
+    buildHeatmap();
+
+    // Timeline
+    buildTimeline();
+  });
+}
+
+function buildHeatmap() {
+  const {P, r, stepUp} = S;
+  const caps    = [30000,40000,50000,60000,80000,100000];
+  const returns = [8,10,12,14,16,18];
+  const body = document.getElementById('heatmapBody');
+
+  // determine range for color scale
+  let allVals=[];
+  const grid = caps.map(cap=>returns.map(rt=>{
+    const mr=Math.pow(1+rt/100,1/12)-1;
+    const sn=findSweet(P,r,mr,cap,stepUp,360);
+    if(sn) allVals.push(sn);
+    return sn;
+  }));
+  const minV=Math.min(...allVals)||0, maxV=Math.max(...allVals)||360;
+
+  let html=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.62rem">
+    <thead><tr><th style="padding:4px 6px;text-align:left;color:var(--text3)">Capacity ↓ / MF% →</th>`;
+  returns.forEach(r=>html+=`<th style="padding:4px 6px;color:var(--sip)">${r}%</th>`);
+  html+=`</tr></thead><tbody>`;
+  grid.forEach((row,ci)=>{
+    html+=`<tr><td style="padding:4px 8px;font-weight:600;color:var(--text2);white-space:nowrap">${(caps[ci]/1000).toFixed(0)}K</td>`;
+    row.forEach(v=>{
+      if(!v){html+=`<td style="padding:3px;text-align:center"><div class="hm-cell" style="background:rgba(239,68,68,.2);color:var(--red)">✗</div></td>`;return;}
+      const t=(v-minV)/(maxV-minV||1);
+      const r2=Math.round(239-(239-16)*( 1-t));
+      const g2=Math.round(68+(185-68)*(1-t));
+      const b2=Math.round(68+(129-68)*(1-t));
+      html+=`<td style="padding:3px;text-align:center"><div class="hm-cell" style="background:rgba(${r2},${g2},${b2},0.22);color:rgb(${r2},${g2},${b2})">${v}m</div></td>`;
+    });
+    html+=`</tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  body.innerHTML=html;
+}
+
+function buildTimeline() {
+  const {N, sweetN, emiN, sipAmt} = S;
+  const box = document.getElementById('timelineBody');
+  const events = [
+    {m:0, label:'Loan Start', icon:'🏦', color:'var(--loan)'},
+    {m:12, label:'FC-Free Zone', icon:'✅', color:'var(--sweet)'},
+    sweetN?{m:sweetN, label:'🎯 Sweet Spot', icon:'🎉', color:'var(--sweet)'}:null,
+    {m:N, label:'Loan End', icon:'🏁', color:'var(--sip)'},
+  ].filter(Boolean).sort((a,b)=>a.m-b.m);
+
+  const maxM = N * 1.05;
+  let html=`<div style="position:relative;padding:20px 0 10px">`;
+  // line
+  html+=`<div style="position:absolute;top:30px;left:20px;right:20px;height:3px;background:var(--border2);border-radius:2px"></div>`;
+  // progress
+  const prog = sweetN ? Math.min(S.N, sweetN) / sweetN * 100 : 50;
+  html+=`<div style="position:absolute;top:30px;left:20px;height:3px;background:linear-gradient(90deg,var(--loan),var(--sweet));border-radius:2px;width:${Math.min(100,prog).toFixed(0)}%;transition:width .4s"></div>`;
+  // events
+  html+=`<div style="display:flex;justify-content:space-between;position:relative">`;
+  events.forEach(ev=>{
+    const left = ((ev.m/maxM)*100).toFixed(1)+'%';
+    html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:4px;position:relative">
+      <div style="width:22px;height:22px;border-radius:50%;background:${ev.color};display:flex;align-items:center;justify-content:center;font-size:.7rem;box-shadow:0 0 8px ${ev.color};flex-shrink:0">${ev.icon}</div>
+      <div style="font-size:.6rem;color:${ev.color};font-weight:600;text-align:center;white-space:nowrap">${ev.m}m</div>
+      <div style="font-size:.58rem;color:var(--text3);text-align:center;max-width:60px;line-height:1.3">${ev.label}</div>
+    </div>`;
+  });
+  html+=`</div></div>`;
+  box.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════
+   ANALYSIS
+═══════════════════════════════════════════════════ */
+function buildAnalysis() {
+  const {P, N, r, mfR, emiN, sipAmt, totalOutgo, corpus, interest, gains, stepUp, taxPerYear} = S;
+  set('a_prin',INR(P)); set('a_int',INR(interest));
+  set('a_gains',SGN(gains)); set('a_tax',INR(taxPerYear * N/12));
+
+  // amort table
+  let html='', bal=P, mfC=0, found=false;
+  const rows=Math.min(N,72);
+  for(let m=1;m<=rows;m++){
+    let sip=sipAmt; if(stepUp>0){const y=Math.floor((m-1)/12);sip*=Math.pow(1+stepUp/100,y);}
+    const int=bal*r, pri=emiN-int;
+    bal=Math.max(0,bal-pri);
+    mfC=(mfC+sip)*(1+mfR);
+    const outgo=emiN*m, cov=outgo>0?mfC/outgo:0;
+    const isSweet=!found&&mfC>=outgo; if(isSweet)found=true;
+    html+=`<tr${isSweet?' class="sr"':''}><td>${m}${isSweet?' 🎯':''}</td><td>${INR(emiN)}</td><td>${INR(pri)}</td><td>${INR(int)}</td><td>${INR(bal)}</td><td>${INR(sip)}</td><td>${INR(mfC)}</td><td>${(cov*100).toFixed(0)}%</td></tr>`;
+  }
+  if(N>72) html+=`<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:10px">…${N-72} more months…</td></tr>`;
+  document.getElementById('amortBody').innerHTML=html;
+
+  drawPie('pieC',[{val:P,color:'#8b5cf6'},{val:Math.max(0,interest),color:'#ef4444'},{val:Math.max(0,gains),color:'#10b981'}]);
+
+  requestAnimationFrame(()=>{
+    const maxM=Math.min(N,120), lb=[], il=[], gl=[];
+    let cumInt=0, cumC=0, sipInv=0;
+    for(let m=1;m<=maxM;m++){
+      let sip=sipAmt; if(stepUp>0){const y=Math.floor((m-1)/12);sip*=Math.pow(1+stepUp/100,y);}
+      cumInt+=(emiN-((P-sipInv)*r||0)); // approximate
+      cumC=(cumC+sip)*(1+mfR); sipInv+=sip;
+      lb.push(m%12===0?m/12+'yr':'');
+      il.push(totalOutgo/N*m-P); gl.push(cumC-sipInv);
+    }
+    const swIdx=S.sweetN&&S.sweetN<=maxM?S.sweetN-1:undefined;
+    lineChart('growthC',
+      [{data:(() => {let c2=0;const a=[];for(let m=1;m<=maxM;m++){let s=sipAmt;if(stepUp>0){const y=Math.floor((m-1)/12);s*=Math.pow(1+stepUp/100,y);}c2=(c2+s)*(1+mfR);a.push(c2);}return a;})(),color:'#06b6d4'},
+       {data:Array.from({length:maxM},(_,i)=>emiN*(i+1)),color:'#f97316'}],
+      lb,{legend:['SIP Corpus','Loan Outgo'],sweetX:swIdx,H:200});
+    lineChart('intGainsC',
+      [{data:il,color:'#ef4444'},{data:gl,color:'#10b981'}],
+      lb,{legend:['Cum. Interest','MF Gains'],sweetX:swIdx,H:180});
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   COMPARE
+═══════════════════════════════════════════════════ */
+let compareScenes = [];
+const CMP_COLORS = ['#06b6d4','#f97316','#8b5cf6'];
+
+function addCompare() {
+  if(compareScenes.length >= 3) { toast('Max 3 scenarios supported','warn'); return; }
+  const P   = +document.getElementById('cmp_P').value   || 1000000;
+  const r_  = +document.getElementById('cmp_r').value   || 9.99;
+  const cap = +document.getElementById('cmp_cap').value || 50000;
+  const mf  = +document.getElementById('cmp_mf').value  || 12;
+  const su  = +document.getElementById('cmp_step').value|| 0;
+  const lbl = document.getElementById('cmp_label').value|| `Scenario ${compareScenes.length+1}`;
+  const r2  = r_/12/100;
+  const mfR2= Math.pow(1+mf/100,1/12)-1;
+  const sN  = findSweet(P,r2,mfR2,cap,su,360);
+  const N2  = sN?Math.ceil(sN/6)*6:120;
+  const emi = calcEMI(P,r2,N2);
+  const sip = Math.max(0,cap-emi);
+  const corp= sipCorpusStepUp(sip,mfR2,N2,su);
+  compareScenes.push({lbl,P,r:r_,cap,mf,su,sN,N:N2,emi,sip,corp,outgo:emi*N2,r2,mfR2});
+  renderCompare();
+  toast(`✓ Added: ${lbl}`);
+}
+
+function removeCompare(i) {
+  compareScenes.splice(i,1);
+  renderCompare();
+}
+
+function renderCompare() {
+  const div = document.getElementById('compareResults');
+  if(!compareScenes.length){ div.innerHTML=`<div class="card"><div class="card-body" style="text-align:center;color:var(--text3);font-size:.78rem;padding:24px">Add up to 3 scenarios above to compare them side-by-side</div></div>`; document.getElementById('compareChartCard').style.display='none'; return; }
+  document.getElementById('compareChartCard').style.display='';
+
+  let html=`<div style="display:grid;grid-template-columns:repeat(${compareScenes.length},1fr);gap:10px">`;
+  compareScenes.forEach((sc,i)=>{
+    const col=CMP_COLORS[i];
+    const net=sc.corp-sc.outgo;
+    html+=`<div class="card" style="border-color:${col}20">
+      <div style="height:3px;background:${col}"></div>
+      <div class="card-body" style="padding:12px">
+        <div style="font-size:.82rem;font-weight:700;color:${col};margin-bottom:8px">${sc.lbl}</div>
+        <div class="sg" style="gap:5px">
+          <div class="stat" style="padding:7px 8px"><div class="sl">Loan</div><div class="sv" style="font-size:.78rem">${INR(sc.P)}</div></div>
+          <div class="stat" style="padding:7px 8px"><div class="sl">Rate</div><div class="sv" style="font-size:.78rem">${sc.r}%</div></div>
+          <div class="stat" style="padding:7px 8px"><div class="sl">Sweet Spot</div><div class="sv" style="color:var(--sweet);font-size:.78rem">${sc.sN?sc.sN+'m':'>360m'}</div></div>
+          <div class="stat" style="padding:7px 8px"><div class="sl">MF Corpus</div><div class="sv" style="color:var(--sip);font-size:.78rem">${INR(sc.corp)}</div></div>
+          <div class="stat full" style="padding:7px 8px;background:${net>=0?'var(--sweet-d)':'var(--loan-d)'};border-color:${net>=0?'var(--sweet)':'var(--loan)'}">
+            <div class="sl">Net Gain</div>
+            <div class="sv" style="color:${net>=0?'var(--sweet)':'var(--red)'};font-size:.82rem">${SGN(net)}</div>
+          </div>
+        </div>
+        <button class="btn-sm danger" style="width:100%;margin-top:8px" onclick="removeCompare(${i})">Remove</button>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  div.innerHTML=html;
+
+  // chart
+  requestAnimationFrame(()=>{
+    const maxN=Math.max(...compareScenes.map(s=>s.N));
+    const maxM=Math.min(maxN,120);
+    const datasets=compareScenes.map((sc,i)=>{
+      let c=0; const data=[];
+      for(let m=1;m<=maxM;m++){
+        let sip=sc.sip; if(sc.su>0){const y=Math.floor((m-1)/12);sip*=Math.pow(1+sc.su/100,y);}
+        c=(c+sip)*(1+sc.mfR2); data.push(c);
+      }
+      return{data,color:CMP_COLORS[i]};
+    });
+    const outgoLine={data:Array.from({length:maxM},(_,i)=>compareScenes[0].emi*(i+1)),color:'rgba(249,115,22,.4)'};
+    const labels=Array.from({length:maxM},(_,i)=>(i+1)%12===0?(i+1)/12+'yr':'');
+    lineChart('compareC',[...datasets,outgoLine],labels,{legend:[...compareScenes.map(s=>s.lbl),'Loan Outgo'],H:200});
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   TOOLS
+═══════════════════════════════════════════════════ */
+let curTool = 'reverse';
+function switchTool(t) {
+  curTool = t;
+  document.querySelectorAll('.tabs .tab').forEach((b,i)=>b.classList.toggle('active',['reverse','tax','prepay','rate'][i]===t));
+  ['reverse','tax','prepay','rate'].forEach(id=>document.getElementById('tool-'+id).style.display=id===t?'':'none');
+}
+
+// REVERSE CALCULATOR
+function calcReverse() {
+  const P   = +document.getElementById('rv_P').value  || 1000000;
+  const ann = +document.getElementById('rv_r').value  || 9.99;
+  const tN  = +document.getElementById('rv_N').value  || 60;
+  const mf  = +document.getElementById('rv_mf').value || 12;
+  const r2  = ann/12/100;
+  const mfR2= Math.pow(1+mf/100,1/12)-1;
+
+  // We need: sipCorpus(sip, mfR, tN) >= emi*tN
+  // emi = calcEMI(P,r,tN)
+  // sip = cap - emi
+  // cap - emi >= emi*tN / FV_factor
+  // Solve for required cap such that sipCorpusStepUp(cap-emi,mfR,tN,0) = emi*tN
+  const emi=calcEMI(P,r2,tN);
+  const outgo=emi*tN;
+  // Binary search for required SIP
+  let lo=0, hi=outgo;
+  for(let i=0;i<60;i++){
+    const mid=(lo+hi)/2;
+    const c=sipCorpusStepUp(mid,mfR2,tN,0);
+    if(c<outgo) lo=mid; else hi=mid;
+  }
+  const reqSip=(lo+hi)/2;
+  const reqCap=emi+reqSip;
+  const feasible=reqCap>emi;
+
+  const res=document.getElementById('reverseResult');
+  if(!feasible||reqSip<=0){
+    res.innerHTML=`<div style="color:var(--red);font-size:.78rem;text-align:center">Cannot achieve in ${tN} months with these parameters.</div>`;
+    return;
+  }
+  res.innerHTML=`
+    <div class="sg3" style="gap:8px">
+      <div class="stat aw"><div class="sl">Required Capacity</div><div class="sv">${INR(reqCap)}</div></div>
+      <div class="stat as"><div class="sl">Required SIP</div><div class="sv">${INR(reqSip)}</div></div>
+      <div class="stat al"><div class="sl">EMI at ${tN}m</div><div class="sv">${INR(emi)}</div></div>
+    </div>
+    <div style="margin-top:10px;padding:10px;background:var(--sweet-d);border-radius:10px;font-size:.75rem;color:var(--sweet);line-height:1.7">
+      To be loan-free in <b>${tN} months</b>, you need a monthly capacity of <b>${INR(reqCap)}</b>.<br>
+      That means paying <b>${INR(emi)}</b> EMI + investing <b>${INR(reqSip)}</b>/mo in MF at ${mf}% CAGR.
+    </div>`;
+}
+
+// TAX SHIELD
+function calcTax() {
+  const annInt  = +document.getElementById('tx_int').value    || 0;
+  const annPri  = +document.getElementById('tx_pri').value    || 0;
+  const bracket = +document.getElementById('tx_bracket').value|| 30;
+  const type    = document.getElementById('tx_type').value;
+  const isHome  = type === 'home';
+  const sec24bCap = isHome ? 200000 : 0;
+  const sec80cCap = isHome ? 150000 : 0;
+  const ded24b = Math.min(annInt, sec24bCap);
+  const ded80c = Math.min(annPri, sec80cCap);
+  const totalDed = ded24b + ded80c;
+  const taxSaved = totalDed * (bracket/100);
+  const effRate  = annInt > 0 ? ((annInt - ded24b * bracket/100) / annInt * 100) : 0;
+
+  document.getElementById('taxResult').innerHTML=`
+    <div class="sg" style="gap:8px">
+      <div class="stat"><div class="sl">Sec 24b Deduction</div><div class="sv" style="color:var(--sweet)">${INR(ded24b)}</div></div>
+      <div class="stat"><div class="sl">Sec 80C Deduction</div><div class="sv" style="color:var(--sweet)">${INR(ded80c)}</div></div>
+      <div class="stat"><div class="sl">Total Deduction</div><div class="sv">${INR(totalDed)}</div></div>
+      <div class="stat"><div class="sl">Tax Bracket</div><div class="sv">${bracket}%</div></div>
+      <div class="stat full aw"><div class="sl">Annual Tax Saved</div><div class="sv">${INR(taxSaved)}</div></div>
+    </div>
+    <div style="margin-top:10px;padding:10px;background:var(--sweet-d);border-radius:10px;font-size:.75rem;color:var(--sweet);line-height:1.7">
+      Effective post-tax interest rate: <b>${effRate.toFixed(2)}%</b> (vs nominal ${isHome?document.getElementById('tx_int').value:0}% interest)<br>
+      ${isHome?`Monthly tax benefit: <b>${INR(taxSaved/12)}/month</b> — reduce this from your effective EMI cost.`:'Tax shield only applicable on home loans for Sec 24b/80C benefits.'}
+    </div>`;
+}
+
+// PREPAYMENT
+function calcPrepay() {
+  const P    = +document.getElementById('pp_P').value    || 1000000;
+  const ann  = +document.getElementById('pp_r').value    || 9.99;
+  const N    = +document.getElementById('pp_N').value    || 120;
+  const lump = +document.getElementById('pp_lump').value || 200000;
+  const at   = +document.getElementById('pp_at').value   || 12;
+  const mode = document.getElementById('pp_mode').value;
+  const r2   = ann/12/100;
+  const emi  = calcEMI(P,r2,N);
+
+  // Original balance at month 'at'
+  let bal=P;
+  for(let m=1;m<at;m++){const i2=bal*r2,pr=emi-i2;bal=Math.max(0,bal-pr);}
+  const balBefore = bal;
+  const balAfter  = Math.max(0, bal - lump);
+
+  let newEmi=emi, newN=N, savings=0;
+  if(mode==='tenure'){
+    // reduce tenure, keep EMI same
+    if(balAfter<=0){newN=at;savings=(N-at)*emi;}
+    else{
+      let rem=at;
+      for(let m=at;m<=N*2;m++){
+        const i2=balAfter*r2,pr=emi-i2;
+        if(balAfter-pr<=0){rem=m;break;}
+        rem=m;
+      }
+      newN=rem;
+      savings=(N-newN)*emi;
+    }
+  } else {
+    // reduce EMI, keep tenure
+    const remMonths=N-at;
+    newEmi=balAfter>0?calcEMI(balAfter,r2,remMonths):0;
+    savings=(emi-newEmi)*remMonths;
+  }
+
+  document.getElementById('prepayResult').innerHTML=`
+    <div class="sg" style="gap:8px">
+      <div class="stat al"><div class="sl">Original EMI</div><div class="sv">${INR(emi)}</div></div>
+      <div class="stat"><div class="sl">Balance at Month ${at}</div><div class="sv">${INR(balBefore)}</div></div>
+      <div class="stat"><div class="sl">Balance After Prepay</div><div class="sv" style="color:var(--sweet)">${INR(balAfter)}</div></div>
+      <div class="stat">${mode==='tenure'?`<div class="sl">New Tenure</div><div class="sv" style="color:var(--sweet)">${newN} months</div>`:`<div class="sl">New EMI</div><div class="sv" style="color:var(--sweet)">${INR(newEmi)}</div>`}</div>
+      <div class="stat full aw"><div class="sl">Total Interest Saved</div><div class="sv">${INR(savings)}</div></div>
+    </div>
+    <div style="margin-top:10px;padding:10px;background:var(--sweet-d);border-radius:10px;font-size:.75rem;color:var(--sweet);line-height:1.7">
+      Prepaying ${INR(lump)} at month ${at} in <b>${mode==='tenure'?'reduce tenure':'reduce EMI'}</b> mode saves you <b>${INR(savings)}</b> in interest.${mode==='tenure'?` Loan ends at month <b>${newN}</b> instead of ${N}.`:` New EMI becomes <b>${INR(newEmi)}/month</b>.`}
+    </div>`;
+}
+
+// RATE ALERT
+function calcRateAlert() {
+  const P   = +document.getElementById('ra_P').value   || 1000000;
+  const ann = +document.getElementById('ra_r').value   || 9.99;
+  const N   = +document.getElementById('ra_N').value   || 120;
+  const cap = +document.getElementById('ra_cap').value || 50000;
+  const r2  = ann/12/100;
+  const baseEmi = calcEMI(P,r2,N);
+  const deltas = [-2,-1,0,1,2,3];
+
+  let html=`<div class="sg" style="gap:6px">`;
+  deltas.forEach(d=>{
+    const newAnn = Math.max(1, ann+d);
+    const nr     = newAnn/12/100;
+    const newEmi = calcEMI(P,nr,N);
+    const diff   = newEmi-baseEmi;
+    const affordable = newEmi<=cap;
+    const bg = d===0?'var(--surface2)':d<0?'var(--sweet-d)':'rgba(239,68,68,.08)';
+    const bc = d===0?'var(--border)':d<0?'var(--sweet)':'var(--red)';
+    html+=`<div class="stat" style="background:${bg};border-color:${bc}">
+      <div class="sl">${newAnn.toFixed(2)}% ${d===0?'(current)':d>0?'↑'+d+'%':'↓'+Math.abs(d)+'%'}</div>
+      <div class="sv" style="color:${d<0?'var(--sweet)':d>0?'var(--red)':'var(--text)'}">${INR(newEmi)}/mo</div>
+      <div style="font-size:.6rem;color:${diff>0?'var(--red)':'var(--sweet)'};">${d!==0?(diff>0?'+':'')+INR(diff)+'/mo':''} ${!affordable?'⚠️ Over Cap':''}</div>
+    </div>`;
+  });
+  html+=`</div>`;
+  html+=`<div style="margin-top:10px;padding:10px;background:var(--loan-d);border-radius:10px;font-size:.75rem;color:var(--loan);line-height:1.7">
+    Current EMI: <b>${INR(baseEmi)}/mo</b>. A +1% rate hike adds <b>${INR(calcEMI(P,(ann+1)/12/100,N)-baseEmi)}/mo</b>. Monitor your floating rate loan closely!
+  </div>`;
+  document.getElementById('rateResult').innerHTML=html;
+}
+
+/* ═══════════════════════════════════════════════════
+   SCENARIOS (localStorage)
+═══════════════════════════════════════════════════ */
+function openScenarios() {
+  renderScenarios();
+  document.getElementById('scenarioModal').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function saveScenario() {
+  const name = prompt('Name this scenario:');
+  if(!name) return;
+  const saved = JSON.parse(localStorage.getItem('loansip_scenes')||'[]');
+  saved.push({name, P:S.P, annual:S.annual, fcPct:S.fcPct, cap:S.cap, mfCAGR:S.mfCAGR, N:S.N, stepUp:S.stepUp, income:S.income, taxBracket:S.taxBracket, savedAt:new Date().toLocaleDateString()});
+  localStorage.setItem('loansip_scenes', JSON.stringify(saved));
+  renderScenarios(); toast('💾 Saved: '+name);
+}
+function loadScenario(i) {
+  const saved=JSON.parse(localStorage.getItem('loansip_scenes')||'[]')[i];
+  if(!saved)return;
+  document.getElementById('loanAmt').value   = saved.P;
+  document.getElementById('rate').value      = saved.annual;
+  document.getElementById('fcCharge').value  = saved.fcPct;
+  document.getElementById('emiCap').value    = saved.cap;
+  document.getElementById('mfReturn').value  = saved.mfCAGR;
+  document.getElementById('tenSlider').value = saved.N;
+  document.getElementById('stepUp').value    = saved.stepUp||0;
+  document.getElementById('income').value    = saved.income||125000;
+  document.getElementById('taxBracket').value= saved.taxBracket||30;
+  onInp(); closeModal('scenarioModal'); toast('📂 Loaded: '+saved.name);
+}
+function deleteScenario(i) {
+  const saved=JSON.parse(localStorage.getItem('loansip_scenes')||'[]');
+  saved.splice(i,1); localStorage.setItem('loansip_scenes',JSON.stringify(saved));
+  renderScenarios(); toast('🗑️ Deleted');
+}
+function renderScenarios() {
+  const saved=JSON.parse(localStorage.getItem('loansip_scenes')||'[]');
+  const el=document.getElementById('scenarioList');
+  if(!saved.length){el.innerHTML=`<div style="text-align:center;color:var(--text3);font-size:.78rem;padding:20px">No saved scenarios yet</div>`;return;}
+  el.innerHTML=saved.map((s,i)=>`
+    <div class="scene-card">
+      <div class="scene-info">
+        <div class="scene-name">${s.name}</div>
+        <div class="scene-meta">${INR(s.P)} · ${s.annual}% · Cap ${INR(s.cap)} · ${s.savedAt||''}</div>
+      </div>
+      <div class="scene-actions">
+        <button class="btn-sm primary" onclick="loadScenario(${i})">Load</button>
+        <button class="btn-sm danger" onclick="deleteScenario(${i})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   SHARE URL
+═══════════════════════════════════════════════════ */
+function shareURL() {
+  const params=new URLSearchParams({
+    P:S.P, r:S.annual, fc:S.fcPct, cap:S.cap,
+    mf:S.mfCAGR, N:S.N, su:S.stepUp
+  });
+  const url=location.href.split('?')[0]+'?'+params.toString();
+  if(navigator.share){
+    navigator.share({title:'LoanSIP Scenario',text:'Check my loan freedom scenario!',url}).catch(()=>{});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>toast('🔗 Link copied to clipboard!'));
+  } else {
+    prompt('Copy this link:', url);
+  }
+}
+function loadFromURL() {
+  const p=new URLSearchParams(location.search);
+  if(!p.has('P'))return;
+  const ids={P:'loanAmt',r:'rate',fc:'fcCharge',cap:'emiCap',mf:'mfReturn',N:'tenSlider',su:'stepUp'};
+  Object.entries(ids).forEach(([key,id])=>{if(p.has(key))document.getElementById(id).value=p.get(key);});
+  onInp(); toast('🔗 Loaded from shared link!');
+}
+
+/* ═══════════════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════════════ */
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('light', !isDark);
+  document.getElementById('themeBtn').textContent = isDark?'🌙':'☀️';
+  document.getElementById('sideThemeIcon').textContent = isDark?'🌙':'☀️';
+  document.getElementById('themeColorMeta').content = isDark?'#0a0f1a':'#f0f4ff';
+  localStorage.setItem('loansip_theme', isDark?'dark':'light');
+  if(curPage==='dashboard') buildDashboard();
+  if(curPage==='analysis')  buildAnalysis();
+}
+function loadTheme() {
+  const t=localStorage.getItem('loansip_theme');
+  if(t==='light'){isDark=false;document.body.classList.add('light');document.getElementById('themeBtn').textContent='☀️';document.getElementById('sideThemeIcon').textContent='☀️';}
+}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════ */
+let toastTimer;
+function toast(msg, type) {
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.background=type==='warn'?'var(--yellow)':'var(--sweet)';
+  el.style.color=type==='warn'?'#1a0a00':'#051f13';
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+/* ═══════════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════════ */
+function faqToggle(el){ el.parentElement.classList.toggle('open'); }
+
+/* ═══════════════════════════════════════════════════
+   ONBOARDING
+═══════════════════════════════════════════════════ */
+const OB_STEPS=[
+  {icon:'🎯',title:'Welcome to LoanSIP',body:'Find the exact loan tenure where your SIP investments cover all your loan payments — making your loan free.'},
+  {icon:'💜',title:'Set Your EMI Capacity',body:'Enter the max you can pay monthly. We split it: part goes to EMI, the rest auto-invests as SIP in mutual funds.'},
+  {icon:'🔥',title:'Find the Sweet Spot',body:'Slide the tenure until the green 🎯 appears — that\'s where your MF corpus = total loan paid. Tap Auto to get there instantly!'},
+];
+let obStep=0;
+function showOB(){document.getElementById('obOverlay').style.display='flex';renderOB();}
+function renderOB(){
+  const s=OB_STEPS[obStep];
+  document.getElementById('obIcon').textContent=s.icon;
+  document.getElementById('obTitle').textContent=s.title;
+  document.getElementById('obBody').textContent=s.body;
+  OB_STEPS.forEach((_,i)=>{document.getElementById('ob'+i).classList.toggle('active',i===obStep);});
+  document.querySelector('.ob-next').textContent=obStep===OB_STEPS.length-1?'Get Started 🚀':'Next →';
+}
+function nextOB(){
+  if(obStep<OB_STEPS.length-1){obStep++;renderOB();}else closeOB();
+}
+function closeOB(){
+  document.getElementById('obOverlay').style.display='none';
+  localStorage.setItem('loansip_ob','done');
+}
+
+/* ═══════════════════════════════════════════════════
+   SERVICE WORKER (offline)
+═══════════════════════════════════════════════════ */
+if('serviceWorker' in navigator){
+  const sw=`const C='ls-v2';const A=['./'];self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match('./')))));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x))))));`;
+  const blob=new Blob([sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  loadTheme();
+  loadFromURL();
+  readInputs(); compute();
+  updateSlider(); updateCalc();
+  buildDashboard();
+  // Tools init
+  calcReverse(); calcTax(); calcPrepay(); calcRateAlert();
+  // Onboarding
+  if(!localStorage.getItem('loansip_ob')) setTimeout(showOB,600);
+});
+window.addEventListener('resize',()=>{
+  if(curPage==='dashboard') buildDashboard();
+  if(curPage==='analysis')  buildAnalysis();
+  if(curPage==='compare')   renderCompare();
+});
+</script>
+</body>
+</html>
